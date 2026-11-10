@@ -1,0 +1,23 @@
+\begin{tabular}{lcccc}
+\toprule
+Model & $p=8$ & $p=10$ & $p=12$ & Mean \\ \midrule
+\multicolumn{5}{l}{\textbf{Bitwise Marginal Prior (Proposed)}} \\ \midrule
+Echo-Prior-Flat & 6.0 $\rightarrow$ $16.83^{+1.59}_{-1.62}$ & 6.3 $\rightarrow$ $\mathbf{24.00}^{+1.93}_{-1.99}$ & 6.7 $\rightarrow$ $\mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ \\
+Echo-Prior-End & 5.2 $\rightarrow$ $13.90^{+1.35}_{-1.28}$ & 5.2 $\rightarrow$ $18.21^{+1.54}_{-1.52}$ & 5.3 $\rightarrow$ $23.72^{+1.81}_{-1.70}$ & $18.61\%$ \\
+Echo-Prior-Alt & 3.5 $\rightarrow$ $9.09^{+0.90}_{-0.85}$ & 3.3 $\rightarrow$ $14.16^{+1.26}_{-1.26}$ & 3.3 $\rightarrow$ $19.27^{+1.59}_{-1.61}$ & $14.18\%$ \\
+\multicolumn{5}{l}{\textbf{Direct 2p-Angle Regression — GNN Backbone}} \\ \midrule
+GNN-TQA & 9.3 $\rightarrow$ $\mathbf{17.33}^{+0.60}_{-0.60}$ & 10.4 $\rightarrow$ $22.45^{+0.70}_{-0.71}$ & 10.0 $\rightarrow$ $28.28^{+0.94}_{-0.97}$ & $22.68\%$ \\
+GNN-Flat & 0.1 $\rightarrow$ $4.19^{+0.69}_{-0.62}$ & 0.1 $\rightarrow$ $7.04^{+1.00}_{-0.96}$ & 0.1 $\rightarrow$ $10.06^{+1.33}_{-1.22}$ & $7.10\%$ \\
+GNN-End & 0.1 $\rightarrow$ $4.86^{+0.71}_{-0.66}$ & 0.1 $\rightarrow$ $7.19^{+0.92}_{-0.89}$ & 0.1 $\rightarrow$ $10.86^{+1.24}_{-1.20}$ & $7.64\%$ \\
+GNN-Alt & 0.1 $\rightarrow$ $4.97^{+0.71}_{-0.67}$ & 0.1 $\rightarrow$ $7.66^{+0.97}_{-0.94}$ & 0.1 $\rightarrow$ $11.08^{+1.23}_{-1.17}$ & $7.90\%$ \\
+GNN-RI & 0.0 $\rightarrow$ $7.99^{+0.30}_{-0.27}$ & 0.1 $\rightarrow$ $9.61^{+0.63}_{-0.60}$ & 0.0 $\rightarrow$ $14.25^{+0.61}_{-0.60}$ & $10.62\%$ \\
+GNN-INTERP & 0.1 $\rightarrow$ $4.47^{+0.60}_{-0.57}$ & 0.1 $\rightarrow$ $7.12^{+0.86}_{-0.83}$ & 0.1 $\rightarrow$ $9.73^{+1.00}_{-0.96}$ & $7.10\%$ \\
+\multicolumn{5}{l}{\textbf{Direct 2p-Angle Regression — MLP Backbone}} \\ \midrule
+MLP-TQA & 8.6 $\rightarrow$ $17.24^{+0.61}_{-0.62}$ & 9.1 $\rightarrow$ $22.17^{+0.68}_{-0.67}$ & 10.4 $\rightarrow$ $28.25^{+0.93}_{-0.95}$ & $22.55\%$ \\
+MLP-Flat & 0.1 $\rightarrow$ $4.52^{+0.71}_{-0.67}$ & 0.1 $\rightarrow$ $7.98^{+1.07}_{-1.01}$ & 0.1 $\rightarrow$ $11.73^{+1.37}_{-1.30}$ & $8.08\%$ \\
+MLP-End & 0.1 $\rightarrow$ $4.66^{+0.68}_{-0.66}$ & 0.1 $\rightarrow$ $8.07^{+1.03}_{-0.93}$ & 0.1 $\rightarrow$ $10.93^{+1.29}_{-1.22}$ & $7.89\%$ \\
+MLP-Alt & 0.1 $\rightarrow$ $5.37^{+0.72}_{-0.68}$ & 0.1 $\rightarrow$ $7.83^{+1.02}_{-0.97}$ & 0.1 $\rightarrow$ $10.31^{+1.27}_{-1.25}$ & $7.83\%$ \\
+MLP-RI & 0.2 $\rightarrow$ $6.87^{+0.47}_{-0.44}$ & 0.2 $\rightarrow$ $9.84^{+0.66}_{-0.60}$ & 0.1 $\rightarrow$ $10.96^{+0.77}_{-0.76}$ & $9.22\%$ \\
+MLP-INTERP & 0.1 $\rightarrow$ $3.88^{+0.56}_{-0.53}$ & 0.1 $\rightarrow$ $6.57^{+0.74}_{-0.76}$ & 0.1 $\rightarrow$ $9.59^{+0.99}_{-0.96}$ & $6.68\%$ \\
+\bottomrule
+\end{tabular}
