@@ -72,7 +72,7 @@ pixi run -e figures paper1-figures
 
 ## Manuscript & Repository Structure
 
-- [`paper/paper1-icml-en.md`](paper/paper1-icml-en.md) / [`paper/paper1-icml-zh.md`](paper/paper1-icml-zh.md): Full bilingual manuscripts, figures (`paper/figures/`), and verified BibTeX (`paper/references.bib`).
+- [`paper/main.pdf`](paper/main.pdf) / [`paper/main.tex`](paper/main.tex) / [`paper/paper1-icml-en.md`](paper/paper1-icml-en.md) / [`paper/paper1-icml-zh.md`](paper/paper1-icml-zh.md): Compiled ICML two-column LaTeX preprint (`main.pdf` / `main.tex`), full bilingual Markdown manuscripts, figures (`paper/figures/`), and verified BibTeX (`paper/references.bib`).
 - `src/echo/`: Constructive 1D Echo parameter synthesis (`core.py`, `flat_synthesis.py`, `flat_scan.py`, `variants.py`).
 - `src/compare/`: Exact statevector evolution, reverse-mode autodiff, and offline probability comparison (`autodiff.py`, `methods.py`, `optimizers.py`, `runtime.py`, `verify.py`).
 - `src/learning/`: `Echo-Prior` equivariant GNN, 1D distribution-overlap decoder, direct $2p$-angle regression models, and Stage-2 energy optimization (`echo_prior.py`, `echo_decoder.py`, `echo_prior_pipeline.py`, `angle_models.py`, `optimization.py`, `evaluation.py`).
