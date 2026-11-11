@@ -2,7 +2,7 @@
 
 ## 摘要
 
-利用量子近似优化算法（QAOA）求解最大权独立集（MWIS）等受约束组合优化问题，需要在由竞争性二次耦合 $J$ 与异构局域外场 $h$ 共同塑造的崎岖 $2p$ 维参数景观中寻优。同质退火轨迹缺乏逐位点相位分辨率且需耗费高昂的在线量子电路选点开销，而直接神经角度回归则因跨分支跳变以及峰值平坦度与坐标稳定性之间的隐函数曲率冲突而崩溃。本文提出 **Echo-QAOA**，利用全局自旋翻转奇偶共轭性在未修改的标准 QAOA 线路拟设内部精确抵消二次耦合 $H_J$，将目标态概率分解为 $O(kn)$ 单比特响应乘积，并构建零量子测量的重叠解码器，从而将病态的角度回归转化为置换等变的边缘蒸馏（**Echo-Prior**）。借助 Daubechies 谱因子分解，我们证明任意阶平顶（Flat-Top）Echo 响应均可由实角度精确实现，具备 $O(\delta^{2k})$ 峰值误差容忍度，且在无零概率区间上严格凸。在 2,750 道五家族基准与 5,120 道跨规模 MWIS 实例上，**Echo-Prior-Flat** 全面超越退火初始化与全部 36 个角度回归模型，在阶段一零量子测量下将高概率解（$P_{\mathrm{gs}}\ge 50\%$）覆盖率提升 $4.9$ 倍。
+利用量子近似优化算法（QAOA）求解最大权独立集（MWIS）等受约束组合优化问题，需要在由竞争性二次耦合 $J$ 与异构局域外场 $h$ 共同塑造的崎岖 $2p$ 维参数景观中寻优。同质退火轨迹缺乏逐位点相位分辨率且需耗费高昂的在线量子电路选点开销，而直接神经角度回归则因跨分支跳变以及峰值平坦度与坐标稳定性之间的隐函数曲率冲突而崩溃。本文提出 **Echo-QAOA**，利用全局自旋翻转奇偶共轭性在未修改的标准 QAOA 线路拟设内部精确抵消二次耦合 $H_J$，将目标态概率分解为 $O(kn)$ 单比特响应乘积，并构建零量子测量的重叠解码器，从而将病态的角度回归转化为置换等变的边缘蒸馏（**Echo-Prior**）。借助 Daubechies 谱因子分解，我们证明任意阶平顶（Flat-Top）Echo 响应均可由实角度精确实现，具备 $O(\delta^{2k})$ 峰值误差容忍度，且在无零概率区间上严格凸。平顶 Echo 在 2,750 道五家族离线基准上居首；在 5,120 道未见跨规模 MWIS 实例上，**Echo-Prior-Flat** 超越退火初始化、一维池化消融与全部 36 个角度回归模型，在阶段一零量子测量下将高概率解（$P_{\mathrm{gs}}\ge 50\%$）覆盖率提升 $4.9$ 倍。
 
 ## 1 引言
 
@@ -107,7 +107,7 @@ _（2）**维数衰减界**：若在标量 $a$ 处有 $q$ 个比特满足 $s_i^\
 
 **证明概要。** $h_i=0$ 的比特在 $|+\rangle$ 上仅积累平凡相位，使 $m_i(a)=0$ 并在命题 2 中贡献固定因子 $1/2$；满足 $s_i^\star m_i(a)\le\eta$ 的比特各自贡献 $\le(1+\eta)/2$（附录 A.1）。$\square$
 
-为突破直积态以解决零场位点与受挫耦合，将第 $j$ 对代价角沿对称破缺方向微扰为 $(-g_j+\delta_j, g_j+\delta_j)$ 可得 $U_B(\theta_j)e^{-2i\delta_j H_J}e^{-2ig_j H_h}F$（附录 A.1），从而沿 $\delta_j=(\gamma_{2j-1}+\gamma_{2j})/2$ 以非零一阶梯度线性重激活 $H_J$。这确立了 Echo-QAOA 的**两阶段分工原则** (Dupont et al., 2022; Wurtz & Love, 2022; Yang et al., 2017)：阶段一在 $O(kn)$ 经典时间内于一维 Echo 流形上锚定外场对齐起点；阶段二释放全部 $2p$ 个角度以恢复多体纠缠。
+为突破直积态以解决零场位点与受挫耦合，将第 $j$ 对代价角沿对称破缺方向微扰为 $(-g_j+\delta_j, g_j+\delta_j)$ 可得 $U_B(\theta_j)e^{-2i\delta_j H_J}e^{-2ig_j H_h}F$（附录 A.1），在 $O(\delta_j)$ 阶线性重激活耦合生成元 $H_J$，并在非退化偶层混合角（$\theta_j\notin\{0,\pm\pi/2\}$）下诱导非零能量切向梯度。这确立了 Echo-QAOA 的**两阶段分工原则** (Dupont et al., 2022; Wurtz & Love, 2022; Yang et al., 2017)：阶段一在 $O(kn)$ 经典时间内于一维 Echo 流形上锚定外场对齐起点；阶段二释放全部 $2p$ 个角度以恢复多体纠缠。
 
 ### 3.8 一维区间导数求根与两阶段优化策略
 
@@ -117,7 +117,7 @@ _（2）**维数衰减界**：若在标量 $a$ 处有 $q$ 个比特满足 $s_i^\
 
 ### 4.1 参数空间的局部灵敏度权衡与跨分支跳变
 
-为设计从 $x=(J,h)$ 到 $\vartheta^\star(x)$ 的跨实例生成器 (Amos, 2023; Verdon et al., 2019)，设 $a_b^\star(x)\in I_b(x)$ 为无零点平顶分支 $I_b(x)$ 上的唯一内部驻点（$\partial_a\mathcal L_k(a_b^\star(x);x)=0$），满足曲率下界 $\partial_{aa}\mathcal L_k\ge\mu>0$ 与 $\|\partial_{ax}\mathcal L_k\|\le M$。由隐函数定理 (Amos, 2023; Gould et al., 2021)，标签灵敏度满足 $\nabla_xa_b^\star(x)=-(\partial_{aa}\mathcal L_k(a_b^\star;x))^{-1}\partial_{ax}\mathcal L_k(a_b^\star;x)$（上界为 $M/\mu$），而在预测误差 $\delta=\widehat a-a_b^\star$ 下损失增量为 $\Delta\mathcal L_k(\delta;x)=\frac12\mathcal L_k''(a_b^\star;x)\delta^2+o(\delta^2)$。这揭示了内禀的**曲率冲突**：减小曲率 $\mathcal L_k''(a_b^\star;x)$ 可展平峰顶以容忍更大误差 $\delta$（理想对齐 $\mathcal L_k''=0$ 时达 $O(\delta^{2k})$），但会反比放大坐标对实例微扰的灵敏度上界 $M/\mu$。全局上，零概率断点将 $\mathcal A_{v,k}$ 分割为竞争分支 $\{I_b(x)\}$；每当两个分支随 $x$ 变化发生损失交叉时，全局极小点 $a^\star(x)=a_{b^\star(x)}^\star(x)$ 即发生不连续跳变，而符号与周期对称性又使 MSE 回归坍缩向零角度谷底（附录 A.3）。因此，我们先在状态空间推断唯一、平滑的**单比特正自旋边缘先验** $\boldsymbol{\pi}=(\pi_1,\ldots,\pi_n)\in[0,1]^n$，再将其解析投射至 Echo 流形。
+为设计从 $x=(J,h)$ 到 $\vartheta^\star(x)$ 的跨实例生成器 (Amos, 2023; Verdon et al., 2019)，设 $a_b^\star(x)\in I_b(x)$ 为无零点平顶分支 $I_b(x)$ 上的唯一内部驻点（$\partial_a\mathcal L_k(a_b^\star(x);x)=0$），满足曲率下界 $\partial_{aa}\mathcal L_k\ge\mu>0$ 与 $\|\partial_{ax}\mathcal L_k\|\le M$。由隐函数定理 (Amos, 2023; Gould et al., 2021)，标签灵敏度满足 $\nabla_xa_b^\star(x)=-(\partial_{aa}\mathcal L_k(a_b^\star;x))^{-1}\partial_{ax}\mathcal L_k(a_b^\star;x)$（上界为 $M/\mu$），而在预测误差 $\delta=\widehat a-a_b^\star$ 下损失增量为 $\Delta\mathcal L_k(\delta;x)=\frac12\mathcal L_k''(a_b^\star;x)\delta^2+o(\delta^2)$。在异构外场下，当部分已对齐比特落入平顶区（稀释总恢复曲率 $\mathcal L_k''$）而处于通带斜坡的其他比特仍保持非零交叉导数 $\partial_{ax}\mathcal L_k\ne 0$ 时，这揭示了条件性的**曲率—灵敏度权衡**：展平峰顶可容忍更大误差 $\delta$（理想对齐时达 $O(\delta^{2k})$），却会放大局部坐标漂移 $(\partial_{aa}\mathcal L_k)^{-1}\partial_{ax}\mathcal L_k$。全局上，零概率断点将 $\mathcal A_{v,k}$ 分割为竞争分支 $\{I_b(x)\}$，分支交叉会引发 $a^\star(x)$ 不连续跳变，而符号与周期对称性又使直接角度回归坍缩向低重叠均值（附录 A.3）。因此，我们先在状态空间推断消除对称简并的有界**单比特正自旋边缘先验** $\boldsymbol{\pi}=(\pi_1,\ldots,\pi_n)\in[0,1]^n$，再将其解析投射至 Echo 流形。
 
 ### 4.2 一维分布重叠解码与全角度能量重耦合
 
@@ -156,7 +156,7 @@ _（2）**维数衰减界**：若在标量 $a$ 处有 $q$ 个比特满足 $s_i^\
 | Pinned MaxCut            |     $39.06^{+2.21}_{-2.22}$      |     $32.63^{+2.21}_{-2.21}$      | $32.94^{+2.09}_{-2.08}$ | $23.33^{+1.92}_{-1.91}$ | $\mathbf{45.39}^{+1.95}_{-1.85}$ | $23.91^{+2.10}_{-2.12}$ |
 | **总体均值（2,750 题）** | $\mathbf{53.07}^{+1.15}_{-1.18}$ |     $48.71^{+1.20}_{-1.20}$      | $46.97^{+1.14}_{-1.17}$ | $31.59^{+1.06}_{-1.07}$ |     $52.73^{+0.93}_{-0.95}$      | $30.11^{+1.07}_{-1.11}$ |
 
-图 2 与表 2 汇总了 2,750 道基准测试结果。**平顶 Echo**（`Echo-Flat`）取得 $\mathbf{53.07}\%$ 的最高总体平均基态概率，超越 `TQA`（$52.73\%$）、`Echo-Alt`（$48.71\%$）、`Echo-End`（$46.97\%$）、`RI`（$31.59\%$）与 `INTERP`（$30.11\%$），在三类物理机制下印证了第 3 章的理论：
+图 2 与表 2 汇总了 2,750 道基准测试结果。**平顶 Echo**（`Echo-Flat`）取得 $\mathbf{53.07}\%$ 的最高总体平均基态概率（对比 `TQA` 的 $52.73\%$，含内部零场负对照 `Pinned MaxCut` 的总体配对差为 $+0.34$ pp，$[-0.42, +1.09]$），领先 `Echo-Alt`（$48.71\%$）、`Echo-End`（$46.97\%$）、`RI`（$31.59\%$）与 `INTERP`（$30.11\%$），在三类物理机制下印证了第 3 章的理论：
 
 1. **异构受约束 `MWIS` 上的统治级优势与全规模无截断收敛胜利**：在惩罚项诱导强异构正外场（$h_i=Qd_i/4-v_i/2>0$）的 MWIS 上，同质 `TQA`（$33.07\%$）与 `INTERP`（$31.64\%$）劣于随机 `RI`（$38.46\%$）。通过抵消 $H_J$（命题 1）并成形单比特响应，我们的 Echo 配方达到 $\mathbf{50.09}\%$（`Echo-Alt`，较 `TQA` 配对净赢 $+17.03$ pp，$[+15.42, +18.60]$）、$49.34\%$（`Echo-Flat`，$+16.27$ pp）与 $46.59\%$（`Echo-End`，$+13.52$ pp）。在 $n\in\{6,8,10,12,14\}$（$p=10$）无截断收敛下，单起点 `Echo-Flat (Top-1)` 取得 $\mathbf{94.37}\%, \mathbf{77.25}\%, \mathbf{53.08}\%, \mathbf{29.64}\%$ 与 $\mathbf{17.47}\%$，在全部规模上击败 `TQA (Top-1)`（$59.88\%\text{--}17.23\%$），净赢 $+34.49, +33.63, +21.56, +6.19$ 与 $+0.24$ pp（命题 3–4）。
 2. **均衡 Ising 家族与深度扩展**：在 `Dense`、`Sparse` 与 `Grid Ising` 上，`Echo-Flat` 在 $n=6\ldots 11$ 每个规模上均居总体第一（$\mathbf{93.41}\%\text{--}\mathbf{51.27}\%$；表 D.1），并在 $p=6,8,10,12$ 四个深度上包揽第一（从 $\mathbf{37.95}\%$ 单调升至 $\mathbf{60.89}\%$ 及 $p=14$ 的 $63.62\%$，而 `RI` 停滞于 $33.12\%\text{--}33.61\%$ 平台、`INTERP` 退化至 $24.16\%$；图 2b，表 D.2）；仅在 $n\ge 12$ 的 30 秒上限下，$2^n$ 模拟开销使无需扫描的 `TQA` 略占优。
@@ -183,11 +183,11 @@ _（2）**维数衰减界**：若在标量 $a$ 处有 $q$ 个比特满足 $s_i^\
 |                             | **Echo-Prior-End**  |     $0$      |     $5.21 \rightarrow 13.90^{+1.35}_{-1.28}$      |     $5.22 \rightarrow 18.21^{+1.54}_{-1.52}$      |     $5.31 \rightarrow 23.72^{+1.81}_{-1.70}$      | $18.61\%$          |
 |                             | **Echo-Prior-Flat** | $\mathbf{0}$ |     $6.00 \rightarrow 16.83^{+1.59}_{-1.62}$      | $6.26 \rightarrow \mathbf{24.00}^{+1.93}_{-1.99}$ | $6.68 \rightarrow \mathbf{29.60}^{+2.27}_{-2.26}$ | $\mathbf{23.48}\%$ |
 
-图 3 与表 3 评估了未见 MWIS 实例（$n=10$，1,024 题）。**Echo-Prior-Flat** 在零次阶段一评估下取得 $\mathbf{23.48}\%$ 的最高平均基态概率（$p=10,12$ 分别为 $\mathbf{24.00}\%, \mathbf{29.60}\%$）——击败 `GNN-TQA`（$22.68\%$）、`MLP-TQA`（$22.55\%$）、`TQA`（$22.42\%$）与 `RI (32)`（$9.73\%$，**$+13.74$ pp**）：
+图 3 与表 3 评估了未见 MWIS 实例（$n=10$，1,024 题）。**Echo-Prior-Flat** 在零次阶段一评估下取得 $\mathbf{23.48}\%$ 的最高跨深度平均基态概率（$p=10,12$ 分别为 $\mathbf{24.00}\%, \mathbf{29.60}\%$）——领先引入平均场辅助特征的 `GNN-TQA`（$22.68\%$，配对差 $+0.80$ pp，$[-0.93, +2.51]$）、`MLP-TQA`（$22.55\%$）、32 次评估的 `TQA`（$22.42\%$，$+1.06$ pp）与 `RI (32)`（$9.73\%$，**$+13.74$ pp**）：
 
-- **角度回归的跨分支崩溃与 $4.9\times$ 高概率覆盖率（$P_{\mathrm{gs}}\ge 50\%$）**：由 Echo、随机或插值教师监督的全角度模型（`MLP/GNN-Flat/End/Alt/RI/INTERP`；表 D.4）尽管采用了对称集合损失，其初始概率仍崩溃至 $0.02\%\text{--}0.20\%$（$\approx 2^{-10}$），优化后仅 $6.68\%\text{--}10.62\%$。由同一平顶教师监督的 **Echo-Prior-Flat** 将最终概率提升 **$3.3\times$** 至 $\mathbf{23.48}\%$（较 `GNN-Flat` 净赢 $+16.38$ pp，$[+14.67, +18.08]$），印证了 4.1 节理论。同时，`GNN-TQA` 与 `MLP-TQA` 虽借助辅助平均场特征拟合平滑斜坡，却坍缩向同质均值——仅在 **$4.1\%, 3.5\%$** 的实例上达到 $P_{\mathrm{gs}}\ge 50\%$（`TQA` 仅 **$3.6\%$**）——而仅用原始 $(J,h)$ 的 **Echo-Prior-Flat** 将 $P_{\mathrm{gs}}\ge 50\%$ 覆盖率扩展至 **$\mathbf{20.0}\%$**（`GNN-TQA` 的 $4.9\times$，图 3c），且阶段二评估步数更少（$\mathbf{98.2}$ vs. $108.4, 118.3$）。
-- **零量子选点优势**：在线 `TQA` 与 `RI (32)` 耗费 32 次阶段一量子评估仍仅达 $22.42\%$ 与 $9.73\%$；**Echo-Prior-Flat** 通过经典重叠选出起点（**0 次量子评估**，命题 2），在 $p=10,12$ 上超越 `TQA` 达 $+2.06, +1.33$ pp。
-- **印证 $O(\delta^{2k})$ 容错度的离线至在线排名反转**：在已知 $s^\star$ 的离线密集扫描下，振荡型 `Echo-Alt`（$50.09\%$）略高于 `Echo-Flat`（$49.34\%$）；而在线部署时 **Echo-Prior-Flat**（$\mathbf{23.48}\%$）领先 **Echo-Prior-End**（$18.61\%$）与 **Echo-Prior-Alt**（$14.18\%$）达 $+4.87\text{--}+9.30$ pp，证实了命题 3 的 $O(\delta^{2k})$ 峰顶平坦度对边缘噪声的缓冲作用。
+- **同教师表示增益与 $4.9\times$ 高概率覆盖率（$P_{\mathrm{gs}}\ge 50\%$）**：由 Echo、随机或插值教师监督的全角度模型（`MLP/GNN-Flat/End/Alt/RI/INTERP`；表 D.4）尽管采用了对称集合损失，其初始概率仍崩溃至 $0.02\%\text{--}0.20\%$（$\approx 2^{-10}$），优化后仅 $6.68\%\text{--}10.62\%$。在完全相同的平顶教师与原始 $(J,h)$ 输入下，**Echo-Prior-Flat** 将最终概率提升 **$3.3\times$** 至 $\mathbf{23.48}\%$（较 `GNN-Flat` 净赢 $+16.38$ pp，$[+14.67, +18.08]$）。尽管 `GNN-TQA` 与 `MLP-TQA` 额外输入三个温度下的平均场特征来回归平滑斜坡，其预测仍集中于同质斜坡均值——仅在 **$4.1\%, 3.5\%$** 的实例上达到 $P_{\mathrm{gs}}\ge 50\%$（`TQA` 仅 **$3.6\%$**）——而 **Echo-Prior-Flat** 锁定异构基态吸引盆，将 $P_{\mathrm{gs}}\ge 50\%$ 覆盖率扩展至 **$\mathbf{20.0}\%$**（`GNN-TQA` 的 $4.9\times$，图 3c），且阶段二评估步数更少（$\mathbf{98.2}$ vs. $108.4, 118.3$）。
+- **零量子选点优势**：在线 `TQA` 与 `RI (32)` 耗费 32 次阶段一量子评估仍仅达 $22.42\%$ 与 $9.73\%$；**Echo-Prior-Flat** 通过经典重叠选出起点（**0 次量子评估**，命题 2），在 $p=10$ 上超越 `TQA` 达 $+2.06$ pp（$[+0.16, +3.97]$），在 $p=12$ 上高出 $+1.33$ pp。
+- **离线至在线排名反转与 $O(\delta^{2k})$ 容错性**：在已知 $s^\star$ 的离线密集扫描下，振荡型 `Echo-Alt`（$50.09\%$）略高于 `Echo-Flat`（$49.34\%$）；而在线部署时 **Echo-Prior-Flat**（$\mathbf{23.48}\%$）领先 **Echo-Prior-End**（$18.61\%$）与 **Echo-Prior-Alt**（$14.18\%$）达 $+4.87\text{--}+9.30$ pp，这与命题 3 的 $O(\delta^{2k})$ 峰顶平坦度缓冲边缘预测误差的机制相一致。
 - **双向零样本跨规模泛化（$n\in\{6,8,10,12,14\}$，5,120 道测试题）**：将 $n=10$（$p=10$）**Echo-Prior-Flat** 权重**零样本**部署至 $n\in\{6,8,10,12,14\}$（每规模 1,024 题）在五个规模上保持 **$90.01\%, 90.26\%, 87.16\%, 87.14\%, 85.11\%$** 的方向准确率；在 $n=6,8,10$ 上达到 **$42.28\rightarrow \mathbf{71.69}^{+2.35}_{-2.47}\%$**、**$19.65\rightarrow \mathbf{48.74}^{+2.52}_{-2.48}\%$** 与 **$6.26\rightarrow \mathbf{24.00}^{+1.93}_{-1.99}\%$**，击败 32 次评估的 `TQA`（$45.19\%, 31.64\%, 21.94\%$）达 **$\mathbf{+26.50}, \mathbf{+17.10}, \mathbf{+2.06}$ pp**（在 $n=12, 14$ 上为 $9.50\%, 3.88\%$，符合命题 5）。
 
 ### 5.4 一维流形读出受控消融与有限采样散粒噪声鲁棒性
@@ -196,23 +196,24 @@ _（2）**维数衰减界**：若在标量 $a$ 处有 $q$ 个比特满足 $s_i^\
 
 | 方法名称            | 读出表示空间                              |                          $p = 8$                           |                          $p = 10$                          |                          $p = 12$                          |       均值         |
 | :------------------ | :---------------------------------------- | :--------------------------------------------------------: | :--------------------------------------------------------: | :--------------------------------------------------------: | :----------------: |
-| **Echo-GNN-Scalar** | 一维标量 $a_{\mathrm{dec}}$（均值池化）   |          $0.07 \rightarrow 5.12^{+0.75}_{-0.72}$           |          $0.10 \rightarrow 8.21^{+1.08}_{-0.98}$           |          $0.18 \rightarrow 12.02^{+1.40}_{-1.33}$          |      $8.45\%$      |
+| **Echo-GNN-Scalar** | 有向一维标量 $a_{\mathrm{dec}}$（均值池化） |          $0.26 \rightarrow 5.22^{+0.72}_{-0.66}$           |          $0.27 \rightarrow 8.03^{+1.04}_{-0.93}$           |          $0.29 \rightarrow 12.15^{+1.24}_{-1.17}$          |      $8.47\%$      |
 | **Echo-GNN-Grid**   | 128 维软网格分布（四阶矩池化）            |          $3.37 \rightarrow 11.63^{+1.35}_{-1.29}$          |          $3.27 \rightarrow 16.53^{+1.58}_{-1.63}$          |          $3.38 \rightarrow 22.55^{+1.91}_{-1.88}$          |     $16.90\%$      |
 | **Echo-Prior-Flat** | 逐比特边缘 $\hat{\pi}\in[0,1]^n$          | $\mathbf{6.00} \rightarrow \mathbf{16.83}^{+1.59}_{-1.62}$ | $\mathbf{6.26} \rightarrow \mathbf{24.00}^{+1.93}_{-1.99}$ | $\mathbf{6.68} \rightarrow \mathbf{29.60}^{+2.27}_{-2.26}$ | $\mathbf{23.48}\%$ |
 
-**表 5：MWIS 测试集（$n=10, p=10$，1,024 题）在投影测量散粒噪声下的端到端优化基态概率（%；每步 $40$ 次电路评估；`Echo-Prior` 指 `Echo-Prior-Flat`，在 $16, 32, 64$ 步下耗费 $0+640, 0+1280, 0+2560$ 次评估，对比 64 步 `TQA` 的 $32+2560$ 次；末列为 64 步配对增益与 95% CI）。**
+**表 5：MWIS 测试集（$n=10, p=10$，1,024 题）在投影测量散粒噪声下的端到端两点移位电路优化基态概率（%；$\delta=0.10$ rad；初态 1 次 + 每步 $41$ 次电路评估；`Echo-Prior` 指 `Echo-Prior-Flat`，在 $16, 32, 64$ 步下耗费 $0+657, 0+1{,}313, 0+2{,}625$ 次评估，对比 64 步 `TQA` 的 $32+2{,}625=2{,}657$ 次；$\infty$ 行分别给出同优化器 64 步移位 Adam 与精确 L-BFGS-B 参考）。**
 
 | $N_{\mathrm{shots}}$ | Echo-Prior (16 步)    | Echo-Prior (32 步)    |     Echo-Prior (64 步)        |     TQA (64 步)         |   相对 TQA 增益 (pp)            |
 | :------------------: | :-------------------: | :-------------------: | :---------------------------: | :---------------------: | :-----------------------------: |
-|         $64$         | $14.55^{+1.54}_{-1.55}$ | $17.76^{+1.71}_{-1.68}$ | $\mathbf{19.67}^{+1.76}_{-1.76}$ | $18.52^{+0.64}_{-0.63}$ | $\mathbf{+1.15}\ ([-0.54, +2.88])$ |
-|        $256$         | $14.86^{+1.57}_{-1.57}$ | $17.99^{+1.75}_{-1.72}$ | $\mathbf{19.78}^{+1.81}_{-1.78}$ | $18.93^{+0.64}_{-0.63}$ | $\mathbf{+0.85}\ ([-0.87, +2.58])$ |
-|      $1{,}024$       | $14.97^{+1.58}_{-1.59}$ | $18.18^{+1.74}_{-1.73}$ | $\mathbf{19.96}^{+1.80}_{-1.77}$ | $19.03^{+0.65}_{-0.64}$ | $\mathbf{+0.93}\ ([-0.78, +2.68])$ |
-|      $4{,}096$       | $15.04^{+1.58}_{-1.59}$ | $18.28^{+1.76}_{-1.74}$ | $\mathbf{19.98}^{+1.81}_{-1.78}$ | $19.11^{+0.65}_{-0.64}$ | $\mathbf{+0.87}\ ([-0.84, +2.62])$ |
-|   $\infty$（精确）    |           —           |           —           | $\mathbf{24.00}^{+1.93}_{-1.99}$ | $21.94^{+0.68}_{-0.68}$ | $\mathbf{+2.06}\ ([+0.16, +3.97])$ |
+|         $64$         | $11.15^{+1.31}_{-1.28}$ | $13.46^{+1.45}_{-1.43}$ | $\mathbf{15.17}^{+1.56}_{-1.55}$ | $14.63^{+0.49}_{-0.50}$ | $+0.53\ ([-0.98, +2.01])$           |
+|        $256$         | $12.96^{+1.43}_{-1.47}$ | $15.78^{+1.62}_{-1.61}$ | $\mathbf{17.48}^{+1.69}_{-1.68}$ | $16.97^{+0.57}_{-0.56}$ | $+0.51\ ([-1.09, +2.12])$           |
+|      $1{,}024$       | $14.16^{+1.53}_{-1.52}$ | $16.90^{+1.67}_{-1.65}$ | $\mathbf{18.78}^{+1.74}_{-1.74}$ | $18.33^{+0.63}_{-0.62}$ | $+0.45\ ([-1.24, +2.17])$           |
+|      $4{,}096$       | $14.66^{+1.56}_{-1.56}$ | $17.56^{+1.71}_{-1.69}$ | $\mathbf{19.33}^{+1.80}_{-1.75}$ | $18.93^{+0.64}_{-0.63}$ | $+0.41\ ([-1.31, +2.15])$           |
+|  $\infty$（Adam）     | $14.85^{+1.57}_{-1.57}$ | $18.06^{+1.74}_{-1.71}$ | $\mathbf{19.61}^{+1.80}_{-1.80}$ | $19.32^{+0.66}_{-0.65}$ | $+0.28\ ([-1.41, +2.04])$           |
+| $\infty$（L-BFGS-B）  |           —           |           —           | $\mathbf{24.00}^{+1.93}_{-1.99}$ | $21.94^{+0.68}_{-0.68}$ | $\mathbf{+2.06}\ ([+0.16, +3.97])$ |
 
-**一维流形内的图级读出与节点级读出对比。** 在完全相同的原始 $(J,h)$ 输入与 GNN 骨干下对比三类读出头（表 4）可分离表示增益：在一维流形内部，连续标量回归（`Echo-GNN-Scalar`）因分支跳变而崩溃（$8.45\%$）；软网格 KL 蒸馏（`Echo-GNN-Grid`）避免了坐标插值（$16.90\%$），但图池化抹去了节点到量子比特的对应关系，无法解析 $n$ 重乘积谱；节点等变边缘 + 重叠解码（**Echo-Prior-Flat**）达到 **$\mathbf{23.48}\%$**（$+6.57$ pp，$[+5.18, +8.00]$）。
+**一维流形内的图级读出与节点级读出对比。** 在完全相同的原始 $(J,h)$ 输入与 GNN 骨干下对比三类读出头（表 4）可分离表示增益：在一维流形内部，有向连续标量回归（`Echo-GNN-Scalar`）因多分支跳变而崩溃（$8.47\%$，配对净增益 $+15.01$ pp，$[+13.33, +16.67]$）；软网格 KL 蒸馏（`Echo-GNN-Grid`）避免了坐标插值（$16.90\%$），但图池化抹去了节点到量子比特的对应关系，无法解析 $n$ 重乘积谱；节点等变边缘 + 重叠解码（**Echo-Prior-Flat**）达到 **$\mathbf{23.48}\%$**（$+6.57$ pp，$[+5.18, +8.00]$）。
 
-**阶段一赢家诅咒免疫与少测量优化。** 在多项分布散粒噪声 $\sigma_E/\sqrt{N_{\mathrm{shots}}}$ 下，32 候选在线 `TQA` 遭受严重的阶段一“赢家诅咒”：其选出真实最优步长的命中率在 $N_{\mathrm{shots}}=16, 32, 64$ 下跌至 **$36.86\%, 44.86\%, 51.02\%$**（$128\text{--}1024$ 下为 $61.00\%\text{--}78.20\%$），而 `Echo-Prior-Flat` 在经典处理器上解码（**0 次测量**，**$100\%$** 免疫）。在端到端参数移位优化中（表 5），`Echo-Prior-Flat` 配合 **32 步早停（节省 $50.6\%$ 测量数）** 即达 $17.76\%\text{--}18.28\%$，在 **64 步** 下于所有采样水平均取得最高概率（**$\mathbf{19.67}\%\text{--}\mathbf{19.98}\%$**）。
+**阶段一赢家诅咒免疫与少测量优化。** 在多项分布散粒噪声 $\sigma_E/\sqrt{N_{\mathrm{shots}}}$ 下，32 候选在线 `TQA` 遭受严重的阶段一“赢家诅咒”：其选出真实最优步长的命中率在 $N_{\mathrm{shots}}=16, 32, 64$ 下跌至 **$36.86\%, 44.86\%, 51.02\%$**（$128\text{--}1024$ 下为 $61.00\%\text{--}78.20\%$），而 `Echo-Prior-Flat` 在经典处理器上解码（**0 次测量**，**$100\%$** 免疫）。在端到端两点移位电路优化中（表 5），`Echo-Prior-Flat` 随测量次数单调收敛至其无噪 Adam 极限（$15.17\%\to 19.61\%$），在 **32 步早停（节省 $50.6\%$ 总测量数）** 下已在置信区间内追平 64 步 `TQA`，并在 **64 步** 下于所有采样水平保持数值领先（$15.17\%\text{--}19.33\%$ 对 $14.63\%\text{--}18.93\%$）。
 
 ## 6 讨论与结论
 
@@ -256,7 +257,7 @@ Farhi, E., Goldstone, J., Gutmann, S., Lapan, J., Lundgren, A., & Preda, D. (200
 
 Galda, A., Liu, X., Lykov, D., Alexeev, Y., & Safro, I. (2021). Transferability of optimal QAOA parameters between random graphs. In _2021 IEEE International Conference on Quantum Computing and Engineering (QCE)_ (pp. 171–180). IEEE. https://doi.org/10.1109/qce52317.2021.00034
 
-Gilmer, J., Schoenholz, S. S., Riley, P. F., Vinyals, O., & Dahl, G. E. (2017). Neural message passing for quantum chemistry. In _Proceedings of the 34th International Conference on Machine Learning (ICML)_ (Vol. 70, pp. 1263–1272). PMLR. https://doi.org/10.48550/arXiv.1704.01212
+Gilmer, J., Schoenholz, S. S., Riley, P. F., Vinyals, O., & Dahl, G. E. (2017). Neural message passing for quantum chemistry. In _Proceedings of the 34th International Conference on Machine Learning (ICML)_ (Vol. 70, pp. 1263–1272). PMLR.
 
 Gilyén, A., Su, Y., Low, G. H., & Wiebe, N. (2019). Quantum singular value transformation and beyond: Exponential improvements for quantum matrix arithmetics. In _Proceedings of the 51st Annual ACM SIGACT Symposium on Theory of Computing (STOC)_ (pp. 193–204). ACM. https://doi.org/10.1145/3313276.3316366
 
@@ -280,13 +281,13 @@ Jiang, L., Zhang, C., & Chen, F. (2025). QSeer: A quantum-inspired graph neural 
 
 Kadowaki, T., & Nishimori, H. (1998). Quantum annealing in the transverse Ising model. _Physical Review E_, _58_(5), 5355–5363. https://doi.org/10.1103/physreve.58.5355
 
-Karalias, N., & Loukas, A. (2020). Erdős goes neural: An unsupervised learning framework for combinatorial optimization on graphs. _Advances in Neural Information Processing Systems_, _33_, 6659–6672. https://doi.org/10.48550/arXiv.2006.10643
+Karalias, N., & Loukas, A. (2020). Erdős goes neural: An unsupervised learning framework for combinatorial optimization on graphs. _Advances in Neural Information Processing Systems_, _33_, 6659–6672.
 
 Katial, V., Smith-Miles, K., Hill, C., & Hollenberg, L. (2025). On the instance dependence of parameter initialization for the quantum approximate optimization algorithm: Insights via instance space analysis. _INFORMS Journal on Computing_, _37_(1), 146–171. https://doi.org/10.1287/ijoc.2024.0564
 
 Liang, Z., Liu, G., Liu, Z., Cheng, J., Hao, T., Liu, K., Ren, H., Song, Z., Liu, J., Ye, F., & Shi, Y. (2024). Invited: Graph learning for parameter prediction of quantum approximate optimization algorithm. In _Proceedings of the 61st ACM/IEEE Design Automation Conference (DAC)_ (pp. 1–4). ACM. https://doi.org/10.1145/3649329.3663523
 
-Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization. In _International Conference on Learning Representations (ICLR)_. https://doi.org/10.48550/arXiv.1711.05101
+Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization. In _International Conference on Learning Representations (ICLR)_.
 
 Lotshaw, P. C., Humble, T. S., Herrman, R., Ostrowski, J., & Siopsis, G. (2021). Empirical performance bounds for quantum approximate optimization. _Quantum Information Processing_, _20_(12), 403. https://doi.org/10.1007/s11128-021-03342-3
 
@@ -334,13 +335,13 @@ Wierichs, D., Izaac, J., Wang, C., & Lin, C. Y. Y. (2022). General parameter-shi
 
 Wurtz, J., & Love, P. J. (2022). Counterdiabaticity and the quantum approximate optimization algorithm. _Quantum_, _6_, 635. https://doi.org/10.22331/q-2022-01-27-635
 
-Xu, K., Hu, W., Leskovec, J., & Jegelka, S. (2019). How powerful are graph neural networks? In _International Conference on Learning Representations (ICLR)_. https://doi.org/10.48550/arXiv.1810.00826
+Xu, K., Hu, W., Leskovec, J., & Jegelka, S. (2019). How powerful are graph neural networks? In _International Conference on Learning Representations (ICLR)_.
 
 Yang, Z. C., Rahmani, A., Shabani, A., Neven, H., & Chamon, C. (2017). Optimizing variational quantum algorithms using Pontryagin's minimum principle. _Physical Review X_, _7_(2), 021027. https://doi.org/10.1103/physrevx.7.021027
 
-You, X., & Wu, X. (2021). Exponentially many local minima in quantum neural networks. In _Proceedings of the 38th International Conference on Machine Learning (ICML)_ (Vol. 139, pp. 12144–12155). PMLR. https://doi.org/10.48550/arXiv.2110.02479
+You, X., & Wu, X. (2021). Exponentially many local minima in quantum neural networks. In _Proceedings of the 38th International Conference on Machine Learning (ICML)_ (Vol. 139, pp. 12144–12155). PMLR.
 
-Zhang, Y., Hare, J., & Prügel-Bennett, A. (2019). Deep set prediction networks. _Advances in Neural Information Processing Systems_, _32_, 3212–3222. https://doi.org/10.48550/arXiv.1906.06565
+Zhang, Y., Hare, J., & Prügel-Bennett, A. (2019). Deep set prediction networks. _Advances in Neural Information Processing Systems_, _32_, 3212–3222.
 
 Zhou, L., Wang, S. T., Choi, S., Pichler, H., & Lukin, M. D. (2020). Quantum approximate optimization algorithm: Performance, mechanism, and implementation on near-term devices. _Physical Review X_, _10_(2), 021067. https://doi.org/10.1103/physrevx.10.021067
 
@@ -590,15 +591,15 @@ $$
 
 **启发式基线起点。** 随机初始化（`RI`）在全域均匀采样 $\gamma_\ell\in[-10\pi,10\pi]$ 与共享对数尺度采样之间交替重启，混合角从 $[-\pi/2,\pi/2]$ 均匀抽取（在线单起点 RI 采用确定性实例种子 `seed = 0`）。Trotter 化量子退火（`TQA`）设 $u_\ell=(\ell-1/2)/p$、$\gamma_\ell=\Delta t\,u_\ell$ 及 $\beta_\ell=-\Delta t(1-u_\ell)$（模 $\pi$ 包裹至 $[-\pi/2,\pi/2)$），评估 $[0.05, 5.0]$ 上的首批 32 个几何步长 $\Delta t$（在线 TQA 评估全部 32 个点的量子期望能量并选取最低能量候选点）。逐层插值（`INTERP`）从 $p=1$ 随机初始化出发，逐层线性插值优化后的角度直至深度 $p$。
 
-**优化预算与 L-BFGS-B 超参数。** 离线教师采集（4.3 节）与五家族基准（5.2 节）分别施加每任务 10 秒与 30 秒的严格墙钟上限，涵盖配方合成、一维扫描、能量表构建与局部优化。所有局部优化（离线概率最大化与在线无监督能量最小化）均采用盒约束 L-BFGS-B (Byrd et al., 1995)，配置为 `maxiter = 128`、`maxfun = 2048`、`maxls = 20`、`ftol = 2.220446049250313e-9`、`gtol = 1e-8`，边界为 $\gamma_\ell\in[-10\pi,10\pi]$、$\beta_\ell\in[-\pi/2,\pi/2]$。在线能量优化无墙钟截断，返回已评估轨迹中能量最低的点。离线多分支教师筛选采用相对概率阈值 $\alpha_{\mathrm{prob}}=0.9$ 与归一化等价距离阈值 $\delta_{\mathrm{sep}}=0.01$，每题每教师保留至多 $R=4$ 条分离分支。
+**优化预算、计算环境与 L-BFGS-B 超参数。** 离线教师采集（4.3 节）与五家族基准（5.2 节）在绑定单线程（`OMP_NUM_THREADS = 1`）的 Intel Xeon Platinum 8480+ CPU 工作节点上分别施加每任务 10 秒与 30 秒的严格墙钟上限，涵盖配方合成、一维扫描、能量表构建与局部优化。所有局部优化（离线概率最大化与在线无监督能量最小化）均采用盒约束 L-BFGS-B (Byrd et al., 1995)，配置为 `maxiter = 128`、`maxfun = 2048`、`maxls = 20`、`ftol = 2.220446049250313e-9`、`gtol = 1e-8`，边界为 $\gamma_\ell\in[-10\pi,10\pi]$、$\beta_\ell\in[-\pi/2,\pi/2]$。在线能量优化无墙钟截断（在 $n=10, p=10$ 测试集上 $80.7\%$ 的 `Echo-Prior-Flat` 实例在 `maxiter = 128` 前达到精确梯度容差收敛），返回已评估轨迹中能量最低的点。离线多分支教师筛选采用相对概率阈值 $\alpha_{\mathrm{prob}}=0.9$ 与归一化等价距离阈值 $\delta_{\mathrm{sep}}=0.01$，每题每教师保留至多 $R=4$ 条分离分支。
 
-**有限投影测量散粒噪声协议。** 在有限采样实验中（5.4 节，MWIS 测试集，$n=10, p=10$，1,024 题），对任意参数向量 $\vartheta$，我们先计算精确测量分布 $P_\vartheta(s)=|\langle s|\psi_p(\vartheta)\rangle|^2$。在阶段一选点测试（$N_{\mathrm{shots}}\in\{16,32,64,128,256,512,1024\}$）中，每道实例 `idx` 使用确定性随机数生成器 `SeedSequence([0, 1, idx])` 运行 5 次独立试验：每次在 TQA 的 32 个候选点上抽取多项分布计数 $\boldsymbol{c}_m\sim\operatorname{Multinomial}(N_{\mathrm{shots}},P(\vartheta_m))$ 以选出最低经验能量 $\widehat E(\vartheta_m)=\boldsymbol{c}_m^\top\boldsymbol{E}/N_{\mathrm{shots}}$。在端到端参数移位优化（$N_{\mathrm{shots}}\in\{64,256,1024,4096\}$，确定性 RNG `SeedSequence([0, 2, shots, idx])`）中，TQA 在 $N_{\mathrm{shots}}$ 下对每个候选点执行 1 次多项分布抽样选出起点，而 `Echo-Prior-Flat`（`seed = 0` 冻结权重）直接使用零量子测量的 128 点经典重叠起点；在阶段二（$p=10$ 下每步 $2\times 2p=40$ 次电路评估）中，每步 $t=1,\ldots,64$ 抽取 $2\times 2p$ 个多项分布投影测量样本合成含噪参数移位梯度，并抽取 1 次多项分布能量测量以跟踪 Adam（$\beta_1=0.9, \beta_2=0.999, \epsilon=10^{-8}$）配合 64 步余弦学习率退火（$0.04\to 0.002$）下的最优观测参数，在第 $16$ 步（$640$ 次阶段二电路评估）、$32$ 步（$1{,}280$ 次评估）与 $64$ 步（$2{,}560$ 次评估）评估真实 $P_{\mathrm{gs}}$。
+**有限投影测量散粒噪声协议。** 在有限采样实验中（5.4 节，MWIS 测试集，$n=10, p=10$，1,024 题），对任意参数向量 $\vartheta$，我们先计算精确测量分布 $P_\vartheta(s)=|\langle s|\psi_p(\vartheta)\rangle|^2$。在阶段一选点测试（$N_{\mathrm{shots}}\in\{16,32,64,128,256,512,1024\}$）中，每道实例 `idx` 使用确定性随机数生成器 `SeedSequence([0, 1, idx])` 运行 5 次独立试验：每次在 TQA 的 32 个候选点上抽取多项分布计数 $\boldsymbol{c}_m\sim\operatorname{Multinomial}(N_{\mathrm{shots}},P(\vartheta_m))$ 以选出最低经验能量 $\widehat E(\vartheta_m)=\boldsymbol{c}_m^\top\boldsymbol{E}/N_{\mathrm{shots}}$。在端到端两点移位电路优化（$N_{\mathrm{shots}}\in\{64,256,1024,4096\}$，确定性 RNG `SeedSequence([0, 2, shots, idx])`，另附一致 64 步 Adam 日程下的精确期望无噪对照 $\infty$）中，TQA 在 $N_{\mathrm{shots}}$ 下对每个候选点执行 1 次多项分布抽样选出起点，而 `Echo-Prior-Flat`（`seed = 0` 冻结权重）直接使用零量子测量的 128 点经典重叠起点。由于全局生成元 $H_C$ 与 $\sum_i X_i$ 具有多本征值谱（全局混合器最高谐波频率为 $2n$，$n=10$ 时 Nyquist 半周期为 $\pi/(2n)\approx 0.157$ rad），阶段二在不拆解原生全局脉冲的前提下，于对称移位电路 $\vartheta_t\pm\delta\boldsymbol{e}_\ell$（$\delta=0.10$ rad，验证集与精确梯度余弦相似度达 $0.9998$）上执行多项分布测量构造中心差分梯度 $\widehat g_{t,\ell}=[\widehat E(\vartheta_t+\delta\boldsymbol{e}_\ell)-\widehat E(\vartheta_t-\delta\boldsymbol{e}_\ell)]/(2\delta)$：在 1 次初始能量测量后，每步 $t=1,\ldots,64$ 执行 $2\times 2p=40$ 次移位电路测量与 1 次当前点能量测量（累计阶段二电路评估次数 $1+41t$：在 $16, 32, 64$ 步分别为 $657, 1{,}313, 2{,}625$ 次，对比 64 步 TQA 的 $32+2{,}625=2{,}657$ 次），在 Adam（$\beta_1=0.9, \beta_2=0.999, \epsilon=10^{-8}$，余弦学习率 $0.04\to 0.002$）下跟踪历史最低观测能量参数并评估真实 $P_{\mathrm{gs}}$。
 
 ### B.3 神经网络特征工程与训练超参数
 
 **结构 MLP 与结构 GNN（完整 $2p$ 角度回归）。** 节点级输入特征（12 维）包含 $h_i$、$|h_i|$、顶点度、关联边耦合绝对值之和、带符号耦合和、最大关联边权、一阶邻居外场之和与均值、逆温度 $\beta_{\mathrm{mf}}\in\{1,2,5\}$ 下的经典阻尼平均场磁化 $m_i^{\mathrm{mf}}$（80 步，阻尼 $0.5$）(Wainwright & Jordan, 2008) 及 $\beta_{\mathrm{mf}}=2$ 下的 $|m_i^{\mathrm{mf}}|$。图级全局特征（24 维）包含耦合 Frobenius 范数、外场 $\ell_2$ 范数、非零边数、平均边权、外场统计量（均值、绝对值均值、最大/最小绝对值、标准差）以及 $\beta_{\mathrm{mf}}\in\{1,2,5\}$ 下的平均场能量、熵、自由能、磁化率与平均磁化幅值。所有特征仅使用训练集统计量标准化。结构 MLP 展平节点特征并拼接全局特征，经 3 个宽度 256 的 GELU 隐藏层输出 $2p$ 个角度；结构 GNN 沿非零边以边特征 $(J_{ij}, |J_{ij}|)$ 执行 4 轮宽度 128 的消息传递与残差更新 (Gilmer et al., 2017; Xu et al., 2019)，经全局均值池化输出 $2p$ 个角度。模型采用 `float64` 精度，固定 `seed = 0` 与 AdamW (Loshchilov & Hutter, 2019)（批大小 128，300 轮，初始学习率 $10^{-3}$ 余弦退火至 $10^{-5}$，权重衰减 $10^{-4}$），按最小验证集集合距离损失选取权重。
 
-**一维流形读出消融模型（`Echo-GNN-Scalar` 与 `Echo-GNN-Grid`）。** 两个模型共享 `Echo-Prior`（`seed = 0`）完全相同的原始 $(J,h)$ 输入与 4 轮宽度 64 消息传递骨干，但通过池化节点嵌入输出一维平顶流形参数：`Echo-GNN-Scalar` 应用全局均值池化，在对称多分支集合损失 $\min_{r,\sigma}((\widehat a_{\mathrm{dec}}-\sigma a_{\mathrm{dec},qr}^{\mathrm T})/a_{\max})^2$（保留 128 点网格上重叠度 $\ge 0.9$ 倍最大值且间距 $>0.01$ 的至多 $R=4$ 个峰值）下回归一维标量 $\widehat a_{\mathrm{dec}}\in[-10\pi,10\pi]$；`Echo-GNN-Grid` 应用四阶中心矩池化（拼接均值、方差、偏度与峰度为 $256$ 维），并针对归一化 128 点重叠分布 $P_{\mathrm{soft}}(a_m)=S_q(a_m)/\sum_{m'}S_q(a_{m'})$ 最小化 KL 散度。两者均使用 AdamW 余弦退火训练 4,000 步。
+**一维流形读出消融模型（`Echo-GNN-Scalar` 与 `Echo-GNN-Grid`）。** 两个模型共享 `Echo-Prior`（`seed = 0`）完全相同的原始 $(J,h)$ 输入与 4 轮宽度 64 消息传递骨干，但通过池化节点嵌入输出一维平顶流形参数：`Echo-GNN-Scalar` 应用全局均值池化，在不作正负号折叠的有向多分支集合损失 $\min_r((\widehat a_{\mathrm{dec}}-a_{\mathrm{dec},qr}^{\mathrm T})/a_{\max})^2$（因固定 $\boldsymbol{\theta}^{\mathrm{flat}}$ 时翻转标量符号会使奇函数磁化反号，保留 128 点网格上重叠度 $\ge 0.9$ 倍最大值且间距 $>0.01$ 的至多 $R=4$ 个有向峰值）下回归一维标量 $\widehat a_{\mathrm{dec}}\in[-10\pi,10\pi]$；`Echo-GNN-Grid` 应用四阶中心矩池化（拼接均值、方差、偏度与峰度为 $256$ 维），并针对归一化 128 点重叠分布 $P_{\mathrm{soft}}(a_m)=S_q(a_m)/\sum_{m'}S_q(a_{m'})$ 最小化 KL 散度。两者均使用 AdamW 余弦退火训练 4,000 步。
 
 **逐比特边缘编码器（`Echo-Prior`）。** `Echo-Prior` 仅接收经训练集全局标量均值与标准差标准化的上三角耦合与局域外场，构造宽度 64 的初始节点嵌入，执行 $L=4$ 轮宽度 64 的消息传递（GELU 激活、残差连接、固定聚合分母 $Z_{\mathrm{agg}}=n_{\mathrm{train}}-1=9$），并输出逐节点边缘 logit。模型在 `float32` 与固定 `seed = 0` 下使用 AdamW（批大小 64，4,000 步，学习率 $10^{-3}\to 10^{-5}$，权重衰减 $10^{-4}$）训练并冻结最终权重。
 
