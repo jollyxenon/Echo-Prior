@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""生成 Paper 1 (ICML) 的数据主图、分组总表与源数据 CSV（输出至 paper/paper1/figures/）。"""
+"""生成 Echo-Prior (ICML) 的数据主图、分组总表与源数据 CSV（输出至 paper/figures/）。"""
 from pathlib import Path
 import csv
 import json
@@ -88,10 +88,10 @@ def save(fig, name):
 # =============================================================================
 # 1. 五家族离线概率寻优主图 (benchmark-comparison) 与汇总表 (benchmark-tables)
 # =============================================================================
-BENCH_METHODS = ['Flat-Top', 'Alternating-Phase', 'Endpoint-Matched', 'TQA-LBFGSB', 'INTERP-LBFGSB', 'RI-LBFGSB']
-BENCH_NAMES = ['Echo-Flat', 'Echo-Alt', 'Echo-End', 'TQA', 'INTERP', 'RI']
+BENCH_METHODS = ['Flat-Top', 'Alternating-Phase', 'Endpoint-Matched', 'TQA-LBFGSB', 'RI-LBFGSB', 'INTERP-LBFGSB']
+BENCH_NAMES = ['Echo-Flat', 'Echo-Alt', 'Echo-End', 'TQA', 'RI', 'INTERP']
 BENCH_COLORS = ['#007F78', '#C48B29', '#8774AC', '#4676A8', '#8E969D', '#B8BCC2']
-BENCH_FMTS = ['o-', 's-', '^-', 'v-', 'P--', 'D--']
+BENCH_FMTS = ['o-', 's-', '^-', 'v-', 'D--', 'P--']
 
 records = BENCH['per_instance_depth_method']
 ids = sorted({r['instance'] for r in records})

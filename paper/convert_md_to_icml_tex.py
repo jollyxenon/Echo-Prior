@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Deterministically convert paper/paper1/paper1-icml-en.md into the official
-ICML 2027 two-column LaTeX manuscript paper/paper1/main.tex.
+Deterministically convert paper/paper1-icml-en.md into the official
+ICML 2027 two-column LaTeX manuscript paper/main.tex.
 """
 
 import re
@@ -77,29 +77,32 @@ def convert() -> None:
     bib_map = build_bib_map(bib_text)
     md_text = EN_MD.read_text(encoding="utf-8")
 
-    # 1. Extract ## Code and Data Availability and ## Acknowledgments from the end,
-    #    and place them right before @@BIBLIOGRAPHY@@ (starting on Page 9 after \clearpage).
+    # 1. Extract End Matter declarations from the end and place them right before @@BIBLIOGRAPHY@@
     part_before_ref, rem = md_text.split("\n## References\n", 1)
     _, part_app_and_end = rem.split("\n## Appendix A ", 1)
     part_app, part_end = part_app_and_end.split("\n---\n\n## Code and Data Availability\n", 1)
-    code_avail_md, ack_md = part_end.split("\n## Acknowledgments\n", 1)
 
     full_md = (
         part_before_ref.rstrip()
-        + "\n\n@@CODE_AND_ACK@@\n\n@@BIBLIOGRAPHY@@\n\n## Appendix A "
+        + "\n\n@@CLEARPAGE@@\n\n## Code and Data Availability\n"
+        + part_end.rstrip()
+        + "\n\n@@BIBLIOGRAPHY@@\n\n## Appendix A "
         + part_app.rstrip()
         + "\n"
     )
 
     # 2. Replace Mermaid Figure 1 block and caption
     fig1_pattern = re.compile(
-        r"\*\*Figure 1:\s*(.+?)\*\*\s*\n+```mermaid\n.*?\n```",
+        r"\*\*Figure 1:\s*(.+?)\*\*\s*(.*?)\n+```mermaid\n.*?\n```",
         re.DOTALL,
     )
-    full_md = fig1_pattern.sub(
-        lambda m: f"@@FIGURE1_START@@\n{m.group(1).strip()}\n@@FIGURE1_END@@",
-        full_md,
-    )
+
+    def repl_fig1(m: re.Match) -> str:
+        bold_title, rest_cap = m.groups()
+        rest_str = f" {rest_cap.strip()}" if rest_cap.strip() else ""
+        return f"@@FIGURE1_START@@\n\\textbf{{{bold_title.strip()}}}{rest_str}\n@@FIGURE1_END@@"
+
+    full_md = fig1_pattern.sub(repl_fig1, full_md)
 
     # 3. Replace HTML <img> + **Figure X: ...** for Figures 2, 3, etc.
     fig_img_pattern = re.compile(
@@ -129,6 +132,7 @@ def convert() -> None:
 
     def repl_inline_math(m: re.Match) -> str:
         inner = m.group(1)
+        inner = inner.replace("\\rightarrow", "\\rightarrow\\allowbreak")
         return save_math(f"${inner}$")
 
     full_md = re.sub(r"(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)", repl_inline_math, full_md)
@@ -189,7 +193,8 @@ def convert() -> None:
         c = m.group(1)
         c = (
             c.replace("\\", "\\textbackslash{}")
-            .replace("_", "\\_")
+            .replace("_", "\\_\\allowbreak{}")
+            .replace("/", "/\\allowbreak{}")
             .replace("%", "\\%")
             .replace("&", "\\&")
             .replace("#", "\\#")
@@ -216,6 +221,7 @@ def convert() -> None:
         s = re.sub(r"\*(.+?)\*", r"\\emph{\1}", s)
         s = re.sub(r"_([^_]+)_", r"\\emph{\1}", s)
         s = s.replace("@@AST@@", "*")
+        s = re.sub(r'"([^"]+)"', r"``\1''", s)
         s = s.replace("—", "---").replace("–", "--")
         s = (
             s.replace("é", "\\'e")
@@ -266,10 +272,10 @@ def convert() -> None:
             col_spec_str = ">{\\raggedright\\arraybackslash}p{3.0cm}>{\\raggedright\\arraybackslash}p{5.0cm}>{\\raggedright\\arraybackslash}p{4.3cm}>{\\raggedright\\arraybackslash}p{7.8cm}"
         elif t_id in ("2", "D.1", "D.2"):
             col_spec_str = "lcccccc"
-        elif t_id == "3":
-            col_spec_str = "lllccccc"
-        elif t_id == "4":
+        elif t_id in ("3", "D.4"):
             col_spec_str = "llccccc"
+        elif t_id == "4":
+            col_spec_str = "llcccc"
         elif t_id == "5":
             col_spec_str = "cccccc"
         elif t_id == "D.3":
@@ -277,8 +283,18 @@ def convert() -> None:
         else:
             col_spec_str = "".join(col_specs)
 
-        use_resize = t_id in ("1", "2", "3", "4", "5", "D.3")
-        resize_w = "0.78\\textwidth" if t_id == "2" else "\\textwidth"
+        use_resize = t_id in ("1", "2", "3", "4", "5", "D.4")
+        if t_id == "2":
+            resize_w = "0.78\\textwidth"
+        elif t_id in ("3", "D.4"):
+            resize_w = "0.94\\textwidth"
+        elif t_id == "4":
+            resize_w = "0.86\\textwidth"
+        elif t_id == "5":
+            resize_w = "0.88\\textwidth"
+        else:
+            resize_w = "\\textwidth"
+        tabcol_pt = "5.5pt" if t_id in ("3", "4", "5", "D.3", "D.4") else "4.0pt"
         tex_lines = [
             f"\\begin{{{env_name}}}{pos_spec}",
             "\\vskip -0.04in",
@@ -288,7 +304,7 @@ def convert() -> None:
             "\\centering",
             "\\footnotesize",
             "\\renewcommand{\\arraystretch}{0.96}",
-            "\\setlength{\\tabcolsep}{4.0pt}",
+            f"\\setlength{{\\tabcolsep}}{{{tabcol_pt}}}",
         ]
         if use_resize:
             tex_lines.append(f"\\resizebox{{{resize_w}}}{{!}}{{%")
@@ -297,7 +313,9 @@ def convert() -> None:
         h_tex = " & ".join(format_inline_md(c) for c in header_cells) + " \\\\"
         tex_lines.append(h_tex)
         tex_lines.append("\\midrule")
-        for row in data_rows:
+        for r_idx, row in enumerate(data_rows):
+            if t_id in ("3", "D.4") and r_idx > 0 and row[0]:
+                tex_lines.append("\\midrule")
             r_tex = " & ".join(format_inline_md(c) for c in row) + " \\\\"
             tex_lines.append(r_tex)
         tex_lines.append("\\bottomrule")
@@ -413,7 +431,7 @@ def convert() -> None:
                     snum, stitle = m_sec.groups()
                     out_lines.append(f"\\section{{{format_heading_md(stitle)}}}\\label{{sec:{snum}}}")
                 else:
-                    out_lines.append(f"\\section{{{format_heading_md(sec_title)}}}")
+                    out_lines.append(f"\\section*{{{format_heading_md(sec_title)}}}")
             i += 1
             continue
 
@@ -443,20 +461,9 @@ def convert() -> None:
             i += 1
             continue
 
-        if s == "@@CODE_AND_ACK@@":
+        if s == "@@CLEARPAGE@@":
             close_lists_to(0)
-            ack_clean = format_inline_md(
-                " ".join(l.strip() for l in ack_md.strip().splitlines() if l.strip())
-            )
-            out_lines.append(
-                "\\clearpage\n"
-                "\\section*{Code and Data Availability}\n\n"
-                "All source code, benchmark datasets, pretrained model weights, "
-                "and independent verification suites are open-sourced under the MIT License at "
-                "\\url{https://github.com/jollyxenon/Echo-Prior}.\n\n"
-                "\\section*{Acknowledgments}\n\n"
-                f"{ack_clean}"
-            )
+            out_lines.append("\\clearpage")
             i += 1
             continue
 
@@ -479,7 +486,7 @@ def convert() -> None:
                 "\\begin{figure*}[t]\n"
                 "\\vskip -0.02in\n"
                 "\\begin{center}\n"
-                "\\centerline{\\includegraphics[width=0.76\\textwidth]{figures/fig1_echo_qaoa_overview.pdf}}\n"
+                "\\centerline{\\includegraphics[width=0.86\\textwidth]{figures/fig1_echo_qaoa_overview.pdf}}\n"
                 "\\vskip -0.06in\n"
                 f"\\caption{{{cap_tex}}}\n"
                 "\\label{fig:1}\n"
@@ -575,7 +582,12 @@ def convert() -> None:
         t4_inner = re.sub(r"\\vskip -0\.02in\n\\end\{table\*\}\s*$", "", t4_inner)
         t5_inner = re.sub(
             r"^\\begin\{table\*\}\[t\]\n\\vskip -0\.04in\n",
-            lambda _: "\\vskip 0.06in\n",
+            lambda _: "\\vskip 0.02in\n",
+            t5_inner,
+        )
+        t5_inner = re.sub(
+            r"\\vskip -0\.02in(\n\\end\{table\*\}\s*)$",
+            r"\\vskip -0.10in\1",
             t5_inner,
         )
         table_store[3] = t4_inner + "\n" + t5_inner
@@ -629,7 +641,7 @@ def convert() -> None:
     # 12. Assemble full ICML 2027 two-column LaTeX document
     preamble = r"""%%%%%%%% ICML 2027 LATEX MANUSCRIPT: ECHO-QAOA %%%%%%%%%%%%%%%%%
 %
-% Deterministic two-column ICML 2027 conversion of paper/paper1/paper1-icml-en.md.
+% Deterministic two-column ICML 2027 conversion of paper/paper1-icml-en.md.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
@@ -641,6 +653,7 @@ def convert() -> None:
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{hyperref}
+\def\UrlBreaks{\do\/\do-\do_}
 
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
@@ -711,7 +724,7 @@ def convert() -> None:
 \begin{document}
 
 \twocolumn[
-\icmltitle{Echo-QAOA: Constructive Spin-Echo Response Design and\\Per-Qubit Marginal Distillation for Variational Quantum Optimization}
+\icmltitle{Echo-QAOA: Constructive Spin-Echo Response Design and \\Per-Qubit Marginal Distillation for Variational Quantum Optimization}
 
 \begin{icmlauthorlist}
 \icmlauthor{Jianxuan Yao}{sht}
@@ -720,12 +733,13 @@ def convert() -> None:
 \icmlaffiliation{sht}{ShanghaiTech University, Shanghai, China}
 \icmlcorrespondingauthor{Jianxuan Yao}{yaojx2025@shanghaitech.edu.cn}
 
-\icmlkeywords{Quantum Approximate Optimization Algorithm, Spin Echo, Knowledge Distillation, Combinatorial Optimization, ICML}
+\icmlkeywords{Quantum Approximate Optimization Algorithm, Spin Echo, Knowledge Distillation, Combinatorial Optimization}
 
 \vskip 0.3in
 ]
 
 \printAffiliationsAndNotice{}
+\hypersetup{pdftitle={Echo-QAOA: Constructive Spin-Echo Response Design and Per-Qubit Marginal Distillation for Variational Quantum Optimization},pdfauthor={Jianxuan Yao}}
 """
 
     full_tex = preamble + "\n" + body_tex + "\n\n\\end{document}\n"

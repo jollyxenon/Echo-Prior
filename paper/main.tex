@@ -1,6 +1,6 @@
 %%%%%%%% ICML 2027 LATEX MANUSCRIPT: ECHO-QAOA %%%%%%%%%%%%%%%%%
 %
-% Deterministic two-column ICML 2027 conversion of paper/paper1/paper1-icml-en.md.
+% Deterministic two-column ICML 2027 conversion of paper/paper1-icml-en.md.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
@@ -12,6 +12,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{hyperref}
+\def\UrlBreaks{\do\/\do-\do_}
 
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
@@ -82,7 +83,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{Echo-QAOA: Constructive Spin-Echo Response Design and\\Per-Qubit Marginal Distillation for Variational Quantum Optimization}
+\icmltitle{Echo-QAOA: Constructive Spin-Echo Response Design and \\Per-Qubit Marginal Distillation for Variational Quantum Optimization}
 
 \begin{icmlauthorlist}
 \icmlauthor{Jianxuan Yao}{sht}
@@ -91,12 +92,13 @@
 \icmlaffiliation{sht}{ShanghaiTech University, Shanghai, China}
 \icmlcorrespondingauthor{Jianxuan Yao}{yaojx2025@shanghaitech.edu.cn}
 
-\icmlkeywords{Quantum Approximate Optimization Algorithm, Spin Echo, Knowledge Distillation, Combinatorial Optimization, ICML}
+\icmlkeywords{Quantum Approximate Optimization Algorithm, Spin Echo, Knowledge Distillation, Combinatorial Optimization}
 
 \vskip 0.3in
 ]
 
 \printAffiliationsAndNotice{}
+\hypersetup{pdftitle={Echo-QAOA: Constructive Spin-Echo Response Design and Per-Qubit Marginal Distillation for Variational Quantum Optimization},pdfauthor={Jianxuan Yao}}
 
 
 \begin{abstract}
@@ -114,9 +116,9 @@ Existing initialization methods follow two paradigms: heuristic homogeneous traj
 \begin{figure*}[t]
 \vskip -0.02in
 \begin{center}
-\centerline{\includegraphics[width=0.76\textwidth]{figures/fig1_echo_qaoa_overview.pdf}}
+\centerline{\includegraphics[width=0.86\textwidth]{figures/fig1_echo_qaoa_overview.pdf}}
 \vskip -0.06in
-\caption{Overview of Echo-QAOA constructive 1D spectral response design, per-qubit quantum teacher marginal distillation (Echo-Prior), zero-quantum-evaluation distribution-overlap decoding, and full-angle energy recoupling optimization.}
+\caption{\textbf{Overview of Echo-QAOA and Echo-Prior.} \textbf{(A)} Offline distillation extracts smooth single-qubit spin marginals $\pi_i^{\mathrm T}$ from multi-body Echo teachers. \textbf{(B)} Complete Echo pairs cancel even-parity $H_J$ via global spin-flip conjugation $F$, yielding exact single-qubit responses $q_i(a)$. \textbf{(C)} Online deployment maps unseen $(J,h)$ (1) via frozen \texttt{Echo-Prior} weights to spin marginals $\hat{\pi}$ (2), decodes fault-tolerant Flat-Top starts $\vartheta_0$ with zero quantum measurements (3), and releases all $2p$ angles to reactivate $H_J$ entanglement under L-BFGS-B (4).}
 \label{fig:1}
 \end{center}
 \vskip -0.18in
@@ -126,7 +128,7 @@ To break this bottleneck, our core insight is to \textbf{carve out an exact prod
 
 \begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{1pt}\setlength{\topsep}{1pt}
 \item \textbf{Echo-Pair Parity Decoupling and Constructive 1D Recipes}: We prove exact $H_J$ cancellation and $O(kn)$ probability factorization for complete Echo pairs (Propositions 1--2); we formulate Flat-Top, Alternating-Phase, and Endpoint-Matched 1D recipes, proving via Daubechies spectral factorization that arbitrary-order Flat-Top responses admit real angles (Proposition 3), $O(\delta^{2k})$ error tolerance, and strict interval convexity (Proposition 4), alongside local-field boundaries and recoupling (Proposition 5; Section 3).
-\item \textbf{Implicit-Function Diagnosis, Overlap Decoder, and Echo-Prior}: We prove the inverse curvature trade-off between peak flatness and coordinate stability alongside cross-branch jumping; we construct a zero-measurement 1D overlap decoder $S(a)$ and propose permutation-equivariant Per-Qubit Marginal Distillation (\texttt{Echo-Prior-Flat/End/Alt}), decoupling spin-marginal inference from non-convex angles (Section 4).
+\item \textbf{Implicit-Function Diagnosis, Overlap Decoder, and Echo-Prior}: We prove the inverse curvature trade-off between peak flatness and coordinate stability alongside cross-branch jumping; we construct a zero-measurement 1D overlap decoder $S(a)$ and propose permutation-equivariant Per-Qubit Marginal Distillation (\texttt{Echo-Prior-Flat/\allowbreak{}End/\allowbreak{}Alt}), decoupling spin-marginal inference from non-convex angles (Section 4).
 \item \textbf{2,750-Instance Benchmark, 36-Model Evaluation, and 5,120-Instance Cross-Scale Generalization}: Across 2,750 instances, Flat-Top Echo achieves the highest overall mean probability ($\mathbf{53.07}\%$), beating TQA by $+13.52\text{--}+17.03$ pp on MWIS and across all scales under uncapped convergence; on unseen MWIS instances, \textbf{Echo-Prior-Flat} achieves the highest cross-depth mean probability ($\mathbf{23.48}\%$) with zero Stage-1 measurements, expanding $P_{\mathrm{gs}}\ge 50\%$ coverage to $\mathbf{20.0}\%$ ($4.9\times$ GNN-TQA), beating all 36 angle-regression models and 1D pooled ablations, and generalizing zero-shot across $n\in\{6,8,10,12,14\}$ (5,120 instances) with $100\%$ Stage-1 noise immunity (Section 5).
 
 \end{enumerate}
@@ -240,12 +242,12 @@ Around peak alignment $s_i^\star\sin(4a_0h_i)=1$, a perturbation $a=a_0+\delta$ 
 \toprule
 Problem Family & \texttt{Echo-Flat} & \texttt{Echo-Alt} & \texttt{Echo-End} & RI & TQA & INTERP \\
 \midrule
-Dense Ising & $56.17^{+2.39}_{-2.57}$ & $51.27^{+2.59}_{-2.73}$ & $48.57^{+2.50}_{-2.58}$ & $20.16^{+1.78}_{-1.75}$ & $\mathbf{60.18}^{+1.83}_{-1.88}$ & $30.36^{+2.42}_{-2.43}$ \\
-Sparse Ising & $60.16^{+2.34}_{-2.45}$ & $54.84^{+2.49}_{-2.68}$ & $53.02^{+2.44}_{-2.57}$ & $25.19^{+2.01}_{-2.05}$ & $\mathbf{62.33}^{+1.82}_{-1.90}$ & $30.84^{+2.39}_{-2.47}$ \\
-Grid Ising & $60.64^{+2.37}_{-2.44}$ & $54.73^{+2.57}_{-2.60}$ & $53.74^{+2.50}_{-2.58}$ & $30.30^{+2.36}_{-2.38}$ & $\mathbf{62.69}^{+1.95}_{-1.91}$ & $33.82^{+2.51}_{-2.54}$ \\
-MWIS & $49.34^{+2.85}_{-2.93}$ & $\mathbf{50.09}^{+2.62}_{-2.75}$ & $46.59^{+2.63}_{-2.73}$ & $35.32^{+2.60}_{-2.65}$ & $33.07^{+1.77}_{-1.79}$ & $31.64^{+2.36}_{-2.52}$ \\
-Pinned MaxCut & $39.06^{+2.21}_{-2.22}$ & $32.63^{+2.21}_{-2.21}$ & $32.94^{+2.09}_{-2.08}$ & $20.70^{+1.80}_{-1.79}$ & $\mathbf{45.39}^{+1.95}_{-1.85}$ & $23.91^{+2.10}_{-2.12}$ \\
-\textbf{Overall Mean (2,750 inst.)} & $\mathbf{53.07}^{+1.15}_{-1.18}$ & $48.71^{+1.20}_{-1.20}$ & $46.97^{+1.14}_{-1.17}$ & $26.33^{+1.01}_{-0.98}$ & $52.73^{+0.93}_{-0.95}$ & $30.11^{+1.07}_{-1.11}$ \\
+Dense Ising & $56.17^{+2.39}_{-2.57}$ & $51.27^{+2.59}_{-2.73}$ & $48.57^{+2.50}_{-2.58}$ & $27.47^{+2.18}_{-2.12}$ & $\mathbf{60.18}^{+1.83}_{-1.88}$ & $30.36^{+2.42}_{-2.43}$ \\
+Sparse Ising & $60.16^{+2.34}_{-2.45}$ & $54.84^{+2.49}_{-2.68}$ & $53.02^{+2.44}_{-2.57}$ & $32.92^{+2.31}_{-2.32}$ & $\mathbf{62.33}^{+1.82}_{-1.90}$ & $30.84^{+2.39}_{-2.47}$ \\
+Grid Ising & $60.64^{+2.37}_{-2.44}$ & $54.73^{+2.57}_{-2.60}$ & $53.74^{+2.50}_{-2.58}$ & $35.75^{+2.45}_{-2.52}$ & $\mathbf{62.69}^{+1.95}_{-1.91}$ & $33.82^{+2.51}_{-2.54}$ \\
+MWIS & $49.34^{+2.85}_{-2.93}$ & $\mathbf{50.09}^{+2.62}_{-2.75}$ & $46.59^{+2.63}_{-2.73}$ & $38.46^{+2.58}_{-2.67}$ & $33.07^{+1.77}_{-1.79}$ & $31.64^{+2.36}_{-2.52}$ \\
+Pinned MaxCut & $39.06^{+2.21}_{-2.22}$ & $32.63^{+2.21}_{-2.21}$ & $32.94^{+2.09}_{-2.08}$ & $23.33^{+1.92}_{-1.91}$ & $\mathbf{45.39}^{+1.95}_{-1.85}$ & $23.91^{+2.10}_{-2.12}$ \\
+\textbf{Overall Mean (2,750 inst.)} & $\mathbf{53.07}^{+1.15}_{-1.18}$ & $48.71^{+1.20}_{-1.20}$ & $46.97^{+1.14}_{-1.17}$ & $31.59^{+1.06}_{-1.07}$ & $52.73^{+0.93}_{-0.95}$ & $30.11^{+1.07}_{-1.11}$ \\
 \bottomrule
 \end{tabular}%
 }
@@ -317,36 +319,30 @@ Given an estimated marginal prior $\boldsymbol{\pi}\in[0,1]^n$ defining the surr
 
 \begin{table*}[t]
 \vskip -0.04in
-\caption{Initial $\rightarrow$ post-energy-optimization mean ground-state probabilities (\%) on the MWIS test set ($n=10$, 1,024 instances) for per-qubit marginal distillation (Echo-Prior), full $2p$-angle regression (GNN, MLP), and online heuristics. Best values are in bold.}
+\caption{Initial $\rightarrow\allowbreak$ post-energy-optimization mean ground-state probabilities (\%) on the MWIS test set ($n=10$, 1,024 instances) comparing online heuristics, representative $2p$-angle regression models (matched \texttt{Flat} vs. best \texttt{TQA} teachers; full 36-model breakdown in Table D.4), and per-qubit marginal distillation (\texttt{Echo-Prior}). Best values are in bold.}
 \label{tab:3}
 \vskip 0.01in
 \centering
 \footnotesize
 \renewcommand{\arraystretch}{0.96}
-\setlength{\tabcolsep}{4.0pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lllccccc}
+\setlength{\tabcolsep}{5.5pt}
+\resizebox{0.94\textwidth}{!}{%
+\begin{tabular}{llccccc}
 \toprule
-Paradigm \& Backbone & Model Name & Supervision Teacher \& Decoding Mechanism & Stage-1 Evals & $p = 8$ & $p = 10$ & $p = 12$ & Cross-Depth Mean \\
+Paradigm & Method & Stage-1 Evals & $p = 8$ & $p = 10$ & $p = 12$ & Cross-Depth Mean \\
 \midrule
-\textbf{Per-Qubit Echo Distillation} \emph{(Ours)} & \textbf{Echo-Prior-Flat} & Flat-Top teacher marginals + 128-pt 1D overlap & $\mathbf{0}$ & $6.00 \rightarrow 16.83^{+1.59}_{-1.62}$ & $6.26 \rightarrow \mathbf{24.00}^{+1.93}_{-1.99}$ & $6.68 \rightarrow \mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ \\
- & \textbf{Echo-Prior-End} & Endpoint teacher marginals + 128-pt 1D overlap & $0$ & $5.21 \rightarrow 13.90^{+1.35}_{-1.28}$ & $5.22 \rightarrow 18.21^{+1.54}_{-1.52}$ & $5.31 \rightarrow 23.72^{+1.81}_{-1.70}$ & $18.61\%$ \\
- & \textbf{Echo-Prior-Alt} & Alternating teacher marginals + 128-pt 1D overlap & $0$ & $3.46 \rightarrow 9.09^{+0.90}_{-0.85}$ & $3.32 \rightarrow 14.16^{+1.26}_{-1.26}$ & $3.30 \rightarrow 19.27^{+1.59}_{-1.61}$ & $14.18\%$ \\
-\textbf{Full-Angle Regression} \emph{(GNN)} & \textbf{GNN-TQA} & $2p$-D continuous annealing trajectory teacher (TQA) & $0$ & $9.27 \rightarrow \mathbf{17.33}^{+0.60}_{-0.60}$ & $10.40 \rightarrow 22.45^{+0.70}_{-0.71}$ & $9.95 \rightarrow 28.28^{+0.94}_{-0.97}$ & $22.68\%$ \\
- & \textbf{GNN-Flat} & $2p$-D multi-branch Flat-Top Echo teacher & $0$ & $0.09 \rightarrow 4.19^{+0.69}_{-0.62}$ & $0.12 \rightarrow 7.04^{+1.00}_{-0.96}$ & $0.11 \rightarrow 10.06^{+1.33}_{-1.22}$ & $7.10\%$ \\
- & \textbf{GNN-End} & $2p$-D multi-branch Endpoint Echo teacher & $0$ & $0.11 \rightarrow 4.86^{+0.71}_{-0.66}$ & $0.10 \rightarrow 7.19^{+0.92}_{-0.89}$ & $0.11 \rightarrow 10.86^{+1.24}_{-1.20}$ & $7.64\%$ \\
- & \textbf{GNN-Alt} & $2p$-D multi-branch Alternating Echo teacher & $0$ & $0.10 \rightarrow 4.97^{+0.71}_{-0.67}$ & $0.10 \rightarrow 7.66^{+0.97}_{-0.94}$ & $0.10 \rightarrow 11.08^{+1.23}_{-1.17}$ & $7.90\%$ \\
- & \textbf{GNN-RI} & $2p$-D multi-start random local-minima teacher (RI) & $0$ & $0.02 \rightarrow 7.99^{+0.30}_{-0.27}$ & $0.09 \rightarrow 9.61^{+0.63}_{-0.60}$ & $0.02 \rightarrow 14.25^{+0.61}_{-0.60}$ & $10.62\%$ \\
- & \textbf{GNN-INTERP} & $2p$-D layerwise interpolation teacher (INTERP) & $0$ & $0.10 \rightarrow 4.47^{+0.60}_{-0.57}$ & $0.09 \rightarrow 7.12^{+0.86}_{-0.83}$ & $0.11 \rightarrow 9.73^{+1.00}_{-0.96}$ & $7.10\%$ \\
-\textbf{Full-Angle Regression} \emph{(MLP)} & \textbf{MLP-TQA} & $2p$-D continuous annealing trajectory teacher (TQA) & $0$ & $8.58 \rightarrow 17.24^{+0.61}_{-0.62}$ & $9.08 \rightarrow 22.17^{+0.68}_{-0.67}$ & $10.36 \rightarrow 28.25^{+0.93}_{-0.95}$ & $22.55\%$ \\
- & \textbf{MLP-Flat} & $2p$-D multi-branch Flat-Top Echo teacher & $0$ & $0.10 \rightarrow 4.52^{+0.71}_{-0.67}$ & $0.11 \rightarrow 7.98^{+1.07}_{-1.01}$ & $0.11 \rightarrow 11.73^{+1.37}_{-1.30}$ & $8.08\%$ \\
- & \textbf{MLP-End} & $2p$-D multi-branch Endpoint Echo teacher & $0$ & $0.11 \rightarrow 4.66^{+0.68}_{-0.66}$ & $0.14 \rightarrow 8.07^{+1.03}_{-0.93}$ & $0.09 \rightarrow 10.93^{+1.29}_{-1.22}$ & $7.89\%$ \\
- & \textbf{MLP-Alt} & $2p$-D multi-branch Alternating Echo teacher & $0$ & $0.10 \rightarrow 5.37^{+0.72}_{-0.68}$ & $0.10 \rightarrow 7.83^{+1.02}_{-0.97}$ & $0.10 \rightarrow 10.31^{+1.27}_{-1.25}$ & $7.83\%$ \\
- & \textbf{MLP-RI} & $2p$-D multi-start random local-minima teacher (RI) & $0$ & $0.20 \rightarrow 6.87^{+0.47}_{-0.44}$ & $0.15 \rightarrow 9.84^{+0.66}_{-0.60}$ & $0.13 \rightarrow 10.96^{+0.77}_{-0.76}$ & $9.22\%$ \\
- & \textbf{MLP-INTERP} & $2p$-D layerwise interpolation teacher (INTERP) & $0$ & $0.11 \rightarrow 3.88^{+0.56}_{-0.53}$ & $0.10 \rightarrow 6.57^{+0.74}_{-0.76}$ & $0.10 \rightarrow 9.59^{+0.99}_{-0.96}$ & $6.68\%$ \\
-\textbf{Online Heuristics} \emph{(Baselines)} & \textbf{TQA} & 32-pt step-size $\Delta t$ online quantum selection & $32$ & $4.60 \rightarrow 17.05^{+0.56}_{-0.56}$ & $6.81 \rightarrow 21.94^{+0.68}_{-0.68}$ & $8.23 \rightarrow 28.27^{+0.92}_{-0.91}$ & $22.42\%$ \\
- & \textbf{RI (32)} & 32-candidate random angles with online selection & $32$ & $0.22 \rightarrow 6.47^{+0.62}_{-0.60}$ & $0.20 \rightarrow 9.93^{+0.87}_{-0.81}$ & $0.17 \rightarrow 12.81^{+1.02}_{-0.97}$ & $9.73\%$ \\
- & \textbf{RI (1)} & Single-start random initialization & $0$ & $0.10 \rightarrow 3.84^{+0.60}_{-0.57}$ & $0.10 \rightarrow 6.82^{+0.90}_{-0.87}$ & $0.10 \rightarrow 10.42^{+1.23}_{-1.20}$ & $7.03\%$ \\
+\textbf{Online Heuristics} & \textbf{RI (1)} & $0$ & $0.10 \rightarrow\allowbreak 3.84^{+0.60}_{-0.57}$ & $0.10 \rightarrow\allowbreak 6.82^{+0.90}_{-0.87}$ & $0.10 \rightarrow\allowbreak 10.42^{+1.23}_{-1.20}$ & $7.03\%$ \\
+ & \textbf{RI (32)} & $32$ & $0.22 \rightarrow\allowbreak 6.47^{+0.62}_{-0.60}$ & $0.20 \rightarrow\allowbreak 9.93^{+0.87}_{-0.81}$ & $0.17 \rightarrow\allowbreak 12.81^{+1.02}_{-0.97}$ & $9.73\%$ \\
+ & \textbf{TQA} & $32$ & $4.60 \rightarrow\allowbreak 17.05^{+0.56}_{-0.56}$ & $6.81 \rightarrow\allowbreak 21.94^{+0.68}_{-0.68}$ & $8.23 \rightarrow\allowbreak 28.27^{+0.92}_{-0.91}$ & $22.42\%$ \\
+\midrule
+\textbf{Full-Angle Regression} & \textbf{MLP-Flat} & $0$ & $0.10 \rightarrow\allowbreak 4.52^{+0.71}_{-0.67}$ & $0.11 \rightarrow\allowbreak 7.98^{+1.07}_{-1.01}$ & $0.11 \rightarrow\allowbreak 11.73^{+1.37}_{-1.30}$ & $8.08\%$ \\
+ & \textbf{MLP-TQA} & $0$ & $8.58 \rightarrow\allowbreak 17.24^{+0.61}_{-0.62}$ & $9.08 \rightarrow\allowbreak 22.17^{+0.68}_{-0.67}$ & $10.36 \rightarrow\allowbreak 28.25^{+0.93}_{-0.95}$ & $22.55\%$ \\
+ & \textbf{GNN-Flat} & $0$ & $0.09 \rightarrow\allowbreak 4.19^{+0.69}_{-0.62}$ & $0.12 \rightarrow\allowbreak 7.04^{+1.00}_{-0.96}$ & $0.11 \rightarrow\allowbreak 10.06^{+1.33}_{-1.22}$ & $7.10\%$ \\
+ & \textbf{GNN-TQA} & $0$ & $9.27 \rightarrow\allowbreak \mathbf{17.33}^{+0.60}_{-0.60}$ & $10.40 \rightarrow\allowbreak 22.45^{+0.70}_{-0.71}$ & $9.95 \rightarrow\allowbreak 28.28^{+0.94}_{-0.97}$ & $22.68\%$ \\
+\midrule
+\textbf{Per-Qubit Distillation} \emph{(Ours)} & \textbf{Echo-Prior-Alt} & $0$ & $3.46 \rightarrow\allowbreak 9.09^{+0.90}_{-0.85}$ & $3.32 \rightarrow\allowbreak 14.16^{+1.26}_{-1.26}$ & $3.30 \rightarrow\allowbreak 19.27^{+1.59}_{-1.61}$ & $14.18\%$ \\
+ & \textbf{Echo-Prior-End} & $0$ & $5.21 \rightarrow\allowbreak 13.90^{+1.35}_{-1.28}$ & $5.22 \rightarrow\allowbreak 18.21^{+1.54}_{-1.52}$ & $5.31 \rightarrow\allowbreak 23.72^{+1.81}_{-1.70}$ & $18.61\%$ \\
+ & \textbf{Echo-Prior-Flat} & $\mathbf{0}$ & $6.00 \rightarrow\allowbreak 16.83^{+1.59}_{-1.62}$ & $6.26 \rightarrow\allowbreak \mathbf{24.00}^{+1.93}_{-1.99}$ & $6.68 \rightarrow\allowbreak \mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ \\
 \bottomrule
 \end{tabular}%
 }
@@ -365,65 +361,65 @@ To bypass angle-space discontinuities while distilling multi-body entanglement b
 
 \begin{table*}[t]
 \vskip -0.04in
-\caption{Controlled ablation of neural output representations within the 1D Flat-Top Echo manifold on the MWIS test set ($n=10$, 1,024 instances; initial $\rightarrow$ post-optimization ground-state probability, unit: \%).}
+\caption{Controlled ablation of neural readout representations within the 1D Flat-Top Echo manifold on the MWIS test set ($n=10$, 1,024 instances; initial $\rightarrow\allowbreak$ post-optimization ground-state probability, \%).}
 \label{tab:4}
 \vskip 0.01in
 \centering
 \footnotesize
 \renewcommand{\arraystretch}{0.96}
-\setlength{\tabcolsep}{4.0pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llccccc}
+\setlength{\tabcolsep}{5.5pt}
+\resizebox{0.86\textwidth}{!}{%
+\begin{tabular}{llcccc}
 \toprule
-Model Name & Output Space, Pooling, and Supervision / Decoding Mechanism & $p = 8$ & $p = 10$ & $p = 12$ & Cross-Depth Mean & Paired Gain of Echo-Prior-Flat ($p=8 / 10 / 12$, pp) \\
+Method & Readout Representation & $p = 8$ & $p = 10$ & $p = 12$ & Mean \\
 \midrule
-\textbf{Echo-GNN-Scalar} & Continuous scalar $a_{\mathrm{dec}}\in[-10\pi,10\pi]$ (mean pool + set loss) & $0.07 \rightarrow 5.12^{+0.75}_{-0.72}$ & $0.10 \rightarrow 8.21^{+1.08}_{-0.98}$ & $0.18 \rightarrow 12.02^{+1.40}_{-1.33}$ & $8.45\%$ & $+11.71\ /\ +15.80\ /\ +17.59$ \\
-\textbf{Echo-GNN-Grid} & $128$-way soft grid distribution (4th-moment pool + KL distillation) & $3.37 \rightarrow 11.63^{+1.35}_{-1.29}$ & $3.27 \rightarrow 16.53^{+1.58}_{-1.63}$ & $3.38 \rightarrow 22.55^{+1.91}_{-1.88}$ & $16.90\%$ & $+5.20\ /\ +7.47\ /\ +7.05$ \\
-\textbf{Echo-Prior-Flat} & $n$-D single-qubit marginals (node-equivariant + analytical overlap decoding) & $\mathbf{6.00} \rightarrow \mathbf{16.83}^{+1.59}_{-1.62}$ & $\mathbf{6.26} \rightarrow \mathbf{24.00}^{+1.93}_{-1.99}$ & $\mathbf{6.68} \rightarrow \mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ & Reference ($0.00$) \\
+\textbf{Echo-GNN-Scalar} & 1D scalar $a_{\mathrm{dec}}$ (mean pool) & $0.07 \rightarrow\allowbreak 5.12^{+0.75}_{-0.72}$ & $0.10 \rightarrow\allowbreak 8.21^{+1.08}_{-0.98}$ & $0.18 \rightarrow\allowbreak 12.02^{+1.40}_{-1.33}$ & $8.45\%$ \\
+\textbf{Echo-GNN-Grid} & 128-way soft grid (4th-moment pool) & $3.37 \rightarrow\allowbreak 11.63^{+1.35}_{-1.29}$ & $3.27 \rightarrow\allowbreak 16.53^{+1.58}_{-1.63}$ & $3.38 \rightarrow\allowbreak 22.55^{+1.91}_{-1.88}$ & $16.90\%$ \\
+\textbf{Echo-Prior-Flat} & Per-qubit marginals $\hat{\pi}\in[0,1]^n$ & $\mathbf{6.00} \rightarrow\allowbreak \mathbf{16.83}^{+1.59}_{-1.62}$ & $\mathbf{6.26} \rightarrow\allowbreak \mathbf{24.00}^{+1.93}_{-1.99}$ & $\mathbf{6.68} \rightarrow\allowbreak \mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ \\
 \bottomrule
 \end{tabular}%
 }
 
-\vskip 0.06in
-\caption{End-to-end variational optimization ground-state probabilities (\%) on the MWIS test set ($n=10, p=10$, 1,024 instances) under finite projective measurement shot noise and parameter-shift gradients ($40$ circuit evaluations per step). Parentheses indicate Stage-1 + Stage-2 circuit evaluations (16- and 32-step early stopping save $75.3\%$ and $50.6\%$ of total shots vs. 64-step TQA).}
+\vskip 0.02in
+\caption{End-to-end optimization ground-state probabilities (\%) on the MWIS test set ($n=10, p=10$, 1,024 instances) under projective shot noise ($40$ evaluations/step; \texttt{Echo-Prior} denotes \texttt{Echo-Prior-Flat} using $0+640$, $0+1280$, and $0+2560$ evaluations at $16, 32, 64$ steps vs. $32+2560$ for \texttt{TQA}; last column reports 64-step paired gain with 95\% CI).}
 \label{tab:5}
 \vskip 0.01in
 \centering
 \footnotesize
 \renewcommand{\arraystretch}{0.96}
-\setlength{\tabcolsep}{4.0pt}
-\resizebox{\textwidth}{!}{%
+\setlength{\tabcolsep}{5.5pt}
+\resizebox{0.88\textwidth}{!}{%
 \begin{tabular}{cccccc}
 \toprule
-Shots per Evaluation $N_{\mathrm{shots}}$ & Echo-Prior-Flat (16 steps, $0+640$) & Echo-Prior-Flat (32 steps, $0+1280$) & Echo-Prior-Flat (64 steps, $0+2560$) & TQA (64 steps, $32+2560$) & Paired Gain of Echo-Prior-Flat (64 steps) vs. TQA (pp) \\
+$N_{\mathrm{shots}}$ & Echo-Prior (16 steps) & Echo-Prior (32 steps) & Echo-Prior (64 steps) & TQA (64 steps) & Gain vs. TQA (pp) \\
 \midrule
 $64$ & $14.55^{+1.54}_{-1.55}$ & $17.76^{+1.71}_{-1.68}$ & $\mathbf{19.67}^{+1.76}_{-1.76}$ & $18.52^{+0.64}_{-0.63}$ & $\mathbf{+1.15}\ ([-0.54, +2.88])$ \\
 $256$ & $14.86^{+1.57}_{-1.57}$ & $17.99^{+1.75}_{-1.72}$ & $\mathbf{19.78}^{+1.81}_{-1.78}$ & $18.93^{+0.64}_{-0.63}$ & $\mathbf{+0.85}\ ([-0.87, +2.58])$ \\
 $1{,}024$ & $14.97^{+1.58}_{-1.59}$ & $18.18^{+1.74}_{-1.73}$ & $\mathbf{19.96}^{+1.80}_{-1.77}$ & $19.03^{+0.65}_{-0.64}$ & $\mathbf{+0.93}\ ([-0.78, +2.68])$ \\
 $4{,}096$ & $15.04^{+1.58}_{-1.59}$ & $18.28^{+1.76}_{-1.74}$ & $\mathbf{19.98}^{+1.81}_{-1.78}$ & $19.11^{+0.65}_{-0.64}$ & $\mathbf{+0.87}\ ([-0.84, +2.62])$ \\
-$\infty$ (Exact Statevector) & --- & --- & $\mathbf{24.00}^{+1.93}_{-1.99}$ & $21.94^{+0.68}_{-0.68}$ & $\mathbf{+2.06}\ ([+0.16, +3.97])$ \\
+$\infty$ (Exact) & --- & --- & $\mathbf{24.00}^{+1.93}_{-1.99}$ & $21.94^{+0.68}_{-0.68}$ & $\mathbf{+2.06}\ ([+0.16, +3.97])$ \\
 \bottomrule
 \end{tabular}%
 }
-\vskip -0.02in
+\vskip -0.10in
 \end{table*}
 
 \subsection{Experimental Setup and Evaluation Protocol}\label{subsec:5_1}
 
 \textbf{Five-family offline benchmark.} We evaluate five problem families---fully connected \texttt{Dense Ising}, Hamiltonian-cycle \texttt{Sparse Ising}, 2D \texttt{Grid Ising}, single-spin-pinned \texttt{Pinned MaxCut}, and constrained \texttt{MWIS} with heterogeneous positive fields $h_i>0$ (protocols and uniqueness verification in Appendix C)---with 50 unique-ground-state instances per scale across $n\in\{6,\ldots,16\}$ (2,750 instances). Across $p\in\{6,8,10,12,14\}$, we compare \texttt{Echo-Flat}, \texttt{Echo-Alt}, \texttt{Echo-End}, \texttt{RI}, \texttt{TQA}, and \texttt{INTERP} under a 30.0 s wall-clock cap per task and uncapped convergence ($n\in\{6,8,10,12,14\}$, 1,024 instances/scale at $p=10$).
 
-\textbf{MWIS online initialization, cross-scale transfer, and finite-shot robustness.} Centered at $n=10$ (4,096 train / 512 val / 1,024 test instances shared across $p\in\{8,10,12\}$) plus four cross-scale test sets at $n\in\{6,8,12,14\}$ (1,024 instances each; 5,120 total test instances), we compare \texttt{Echo-Prior-Flat/End/Alt} ($M=128$, $Z_{\mathrm{agg}}=9$, $0$ Stage-1 evaluations), 36 full-angle regression models (6 teachers $\times$ 2 backbones \texttt{GNN/MLP} $\times$ 3 depths), 1D pooled ablations (\texttt{Echo-GNN-Scalar/Grid}), and online heuristics (\texttt{TQA} and \texttt{RI (32)} with 32 evaluations, plus \texttt{RI (1)}), alongside finite-shot tests $N_{\mathrm{shots}}\in\{16,\ldots,4096\}$ at $n=10, p=10$. All experiments use \texttt{seed = 0}, withhold $s^\star$ online during L-BFGS-B minimization, verify true $P_{\mathrm{gs}}$ across dual engines, and report 4,000-replicate bootstrap 95\% CIs (Appendix B.2--B.4).
+\textbf{MWIS online initialization, cross-scale transfer, and finite-shot robustness.} Centered at $n=10$ (4,096 train / 512 val / 1,024 test instances shared across $p\in\{8,10,12\}$) plus four cross-scale test sets at $n\in\{6,8,12,14\}$ (1,024 instances each; 5,120 total test instances), we compare \texttt{Echo-Prior-Flat/\allowbreak{}End/\allowbreak{}Alt} ($M=128$, $Z_{\mathrm{agg}}=9$, $0$ Stage-1 evaluations), 36 full-angle regression models (6 teachers $\times$ 2 backbones \texttt{GNN/\allowbreak{}MLP} $\times$ 3 depths), 1D pooled ablations (\texttt{Echo-GNN-Scalar/\allowbreak{}Grid}), and online heuristics (\texttt{TQA} and \texttt{RI (32)} with 32 evaluations, plus \texttt{RI (1)}), alongside finite-shot tests $N_{\mathrm{shots}}\in\{16,\ldots,4096\}$ at $n=10, p=10$. All experiments use \texttt{seed = 0}, withhold $s^\star$ online during L-BFGS-B minimization, verify true $P_{\mathrm{gs}}$ across dual engines, and report 4,000-replicate bootstrap 95\% CIs (Appendix B.2--B.4).
 
 \subsection{Offline Probability Optimization with Known Target States}\label{subsec:5_2}
 
 
 
 
-Figure 2 and Table 2 summarize the 2,750-instance benchmark. \textbf{Flat-Top Echo} (\texttt{Echo-Flat}) achieves the highest overall mean ground-state probability of $\mathbf{53.07}\%$, surpassing \texttt{TQA} ($52.73\%$), \texttt{Echo-Alt} ($48.71\%$), \texttt{Echo-End} ($46.97\%$), \texttt{INTERP} ($30.11\%$), and \texttt{RI} ($26.33\%$), confirming Section 3 across three regimes:
+Figure 2 and Table 2 summarize the 2,750-instance benchmark. \textbf{Flat-Top Echo} (\texttt{Echo-Flat}) achieves the highest overall mean ground-state probability of $\mathbf{53.07}\%$, surpassing \texttt{TQA} ($52.73\%$), \texttt{Echo-Alt} ($48.71\%$), \texttt{Echo-End} ($46.97\%$), \texttt{RI} ($31.59\%$), and \texttt{INTERP} ($30.11\%$), confirming Section 3 across three regimes:
 
 \begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parskip}{1pt}\setlength{\topsep}{1pt}
-\item \textbf{Dominance on Heterogeneous Constrained \texttt{MWIS} and Full-Scale Uncapped Convergence}: On MWIS, where penalty terms induce strong heterogeneous positive fields ($h_i=Qd_i/4-v_i/2>0$), homogeneous \texttt{TQA} ($33.07\%$) and \texttt{INTERP} ($31.64\%$) fall below random \texttt{RI} ($35.32\%$). By canceling $H_J$ (Proposition 1) and shaping single-qubit responses, our Echo recipes reach $\mathbf{50.09}\%$ (\texttt{Echo-Alt}, $+17.03$ pp paired gain over \texttt{TQA}, $[+15.42, +18.60]$), $49.34\%$ (\texttt{Echo-Flat}, $+16.27$ pp), and $46.59\%$ (\texttt{Echo-End}, $+13.52$ pp). Under uncapped convergence across $n\in\{6,8,10,12,14\}$ ($p=10$), single-start \texttt{Echo-Flat (Top-1)} attains $\mathbf{94.37}\%, \mathbf{77.25}\%, \mathbf{53.08}\%, \mathbf{29.64}\%$, and $\mathbf{17.47}\%$, beating \texttt{TQA (Top-1)} ($59.88\%\text{--}17.23\%$) at every scale by $+34.49, +33.63, +21.56, +6.19$, and $+0.24$ pp (Propositions 3--4).
-\item \textbf{Balanced Ising Families and Depth Scaling}: Across \texttt{Dense}, \texttt{Sparse}, and \texttt{Grid Ising}, \texttt{Echo-Flat} ranks first overall at every scale $n=6\ldots 11$ ($\mathbf{93.41}\%\text{--}\mathbf{51.27}\%$; Table D.1) and across depths $p=6,8,10,12$ (climbing monotonically from $\mathbf{37.95}\%$ to $\mathbf{60.89}\%$ and $63.62\%$ at $p=14$, whereas \texttt{INTERP} and \texttt{RI} degrade to $24.16\%$ and $24.13\%$; Figure 2b, Table D.2); only at $n\ge 12$ under the 30 s cap does $2^n$ overhead slightly favor \texttt{TQA}.
+\item \textbf{Dominance on Heterogeneous Constrained \texttt{MWIS} and Full-Scale Uncapped Convergence}: On MWIS, where penalty terms induce strong heterogeneous positive fields ($h_i=Qd_i/4-v_i/2>0$), homogeneous \texttt{TQA} ($33.07\%$) and \texttt{INTERP} ($31.64\%$) fall below random \texttt{RI} ($38.46\%$). By canceling $H_J$ (Proposition 1) and shaping single-qubit responses, our Echo recipes reach $\mathbf{50.09}\%$ (\texttt{Echo-Alt}, $+17.03$ pp paired gain over \texttt{TQA}, $[+15.42, +18.60]$), $49.34\%$ (\texttt{Echo-Flat}, $+16.27$ pp), and $46.59\%$ (\texttt{Echo-End}, $+13.52$ pp). Under uncapped convergence across $n\in\{6,8,10,12,14\}$ ($p=10$), single-start \texttt{Echo-Flat (Top-1)} attains $\mathbf{94.37}\%, \mathbf{77.25}\%, \mathbf{53.08}\%, \mathbf{29.64}\%$, and $\mathbf{17.47}\%$, beating \texttt{TQA (Top-1)} ($59.88\%\text{--}17.23\%$) at every scale by $+34.49, +33.63, +21.56, +6.19$, and $+0.24$ pp (Propositions 3--4).
+\item \textbf{Balanced Ising Families and Depth Scaling}: Across \texttt{Dense}, \texttt{Sparse}, and \texttt{Grid Ising}, \texttt{Echo-Flat} ranks first overall at every scale $n=6\ldots 11$ ($\mathbf{93.41}\%\text{--}\mathbf{51.27}\%$; Table D.1) and across depths $p=6,8,10,12$ (climbing monotonically from $\mathbf{37.95}\%$ to $\mathbf{60.89}\%$ and $63.62\%$ at $p=14$, whereas \texttt{RI} plateaus at $33.12\%\text{--}33.61\%$ and \texttt{INTERP} degrades to $24.16\%$; Figure 2b, Table D.2); only at $n\ge 12$ under the 30 s cap does $2^n$ overhead slightly favor \texttt{TQA}.
 \item \textbf{Interior Zero-Field \texttt{Pinned MaxCut} Confirming Proposition 5}: With non-zero fields restricted to neighbors of pinned $s_0=+1$, Stage-1 Echo obeys the interior zero-field bound $2^{-n_0}$, favoring global-coupling \texttt{TQA} ($\mathbf{45.39}\%$); yet \texttt{Echo-Flat} reaches $39.06\%$ (beating \texttt{INTERP} and \texttt{RI} by $>15$ pp) by locking boundary fields in Stage 1 and reactivating interior $H_J$ in Stage 2 (Section 3.7).
 
 \end{enumerate}
@@ -435,10 +431,10 @@ Figure 2 and Table 2 summarize the 2,750-instance benchmark. \textbf{Flat-Top Ec
 Figure 3 and Table 3 evaluate unseen MWIS instances ($n=10$, 1,024 instances). \textbf{Echo-Prior-Flat} achieves the highest mean probability of $\mathbf{23.48}\%$ ($\mathbf{24.00}\%, \mathbf{29.60}\%$ at $p=10,12$) with zero Stage-1 evaluations---beating \texttt{GNN-TQA} ($22.68\%$), \texttt{MLP-TQA} ($22.55\%$), \texttt{TQA} ($22.42\%$), and \texttt{RI (32)} ($9.73\%$, \textbf{$+13.74$ pp}):
 
 \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{1pt}\setlength{\topsep}{1pt}
-\item \textbf{Cross-Branch Collapse of Angle Regression and $4.9\times$ High-Probability Coverage ($P_{\mathrm{gs}}\ge 50\%$)}: Full-angle models supervised by Echo teachers (\texttt{MLP/GNN-Flat/End/Alt}) collapse to initial probabilities of $0.09\%\text{--}0.14\%$ ($\approx 2^{-10}$) and $7.10\%\text{--}8.08\%$ after optimization despite symmetric set losses. Supervised by the same Flat-Top teacher, \textbf{Echo-Prior-Flat} boosts final probability by \textbf{$3.3\times$} to $\mathbf{23.48}\%$ ($+16.38$ pp over \texttt{GNN-Flat}, $[+14.67, +18.08]$), confirming Section 4.1. While \texttt{GNN-TQA} and \texttt{MLP-TQA} use auxiliary mean-field features to regress smooth ramps, they collapse toward a homogeneous average---achieving $P_{\mathrm{gs}}\ge 50\%$ on only \textbf{$4.1\%, 3.5\%$} of instances (\texttt{TQA}: \textbf{$3.6\%$})---whereas \textbf{Echo-Prior-Flat} (raw $(J,h)$) expands $P_{\mathrm{gs}}\ge 50\%$ coverage to \textbf{$\mathbf{20.0}\%$} ($4.9\times$ \texttt{GNN-TQA}, Figure 3c) with fewer Stage-2 steps ($\mathbf{98.2}$ vs. $108.4, 118.3$).
+\item \textbf{Cross-Branch Collapse of Angle Regression and $4.9\times$ High-Probability Coverage ($P_{\mathrm{gs}}\ge 50\%$)}: Full-angle models supervised by Echo, random, or interpolation teachers (\texttt{MLP/\allowbreak{}GNN-Flat/\allowbreak{}End/\allowbreak{}Alt/\allowbreak{}RI/\allowbreak{}INTERP}; Table D.4) collapse to initial probabilities of $0.02\%\text{--}0.20\%$ ($\approx 2^{-10}$) and $6.68\%\text{--}10.62\%$ after optimization despite symmetric set losses. Supervised by the same Flat-Top teacher, \textbf{Echo-Prior-Flat} boosts final probability by \textbf{$3.3\times$} to $\mathbf{23.48}\%$ ($+16.38$ pp over \texttt{GNN-Flat}, $[+14.67, +18.08]$), confirming Section 4.1. While \texttt{GNN-TQA} and \texttt{MLP-TQA} use auxiliary mean-field features to regress smooth ramps, they collapse toward a homogeneous average---achieving $P_{\mathrm{gs}}\ge 50\%$ on only \textbf{$4.1\%, 3.5\%$} of instances (\texttt{TQA}: \textbf{$3.6\%$})---whereas \textbf{Echo-Prior-Flat} (raw $(J,h)$) expands $P_{\mathrm{gs}}\ge 50\%$ coverage to \textbf{$\mathbf{20.0}\%$} ($4.9\times$ \texttt{GNN-TQA}, Figure 3c) with fewer Stage-2 steps ($\mathbf{98.2}$ vs. $108.4, 118.3$).
 \item \textbf{Zero-Quantum-Selection Supremacy}: Online \texttt{TQA} and \texttt{RI (32)} expend 32 Stage-1 evaluations yet reach $22.42\%$ and $9.73\%$; \textbf{Echo-Prior-Flat} selects its start via classical overlap (\textbf{0 quantum evaluations}, Proposition 2), beating \texttt{TQA} by $+2.06, +1.33$ pp at $p=10,12$.
 \item \textbf{Offline-to-Online Rank Reversal Confirming $O(\delta^{2k})$ Tolerance}: While oscillatory \texttt{Echo-Alt} ($50.09\%$) slightly leads \texttt{Echo-Flat} ($49.34\%$) under dense offline scanning with known $s^\star$, online \textbf{Echo-Prior-Flat} ($\mathbf{23.48}\%$) beats \textbf{Echo-Prior-End} ($18.61\%$) and \textbf{Echo-Prior-Alt} ($14.18\%$) by $+4.87\text{--}+9.30$ pp, confirming Proposition 3's $O(\delta^{2k})$ peak flatness.
-\item \textbf{Bidirectional Zero-Shot Cross-Scale Generalization ($n\in\{6,8,10,12,14\}$, 5,120 Test Instances)}: Deploying the $n=10$ ($p=10$) \textbf{Echo-Prior-Flat} weights \textbf{zero-shot} across $n\in\{6,8,10,12,14\}$ (1,024 instances/scale) maintains \textbf{$90.01\%, 90.26\%, 87.16\%, 87.14\%, 85.11\%$} orientation accuracy; at $n=6,8,10$, it attains \textbf{$42.28\rightarrow \mathbf{71.69}^{+2.35}_{-2.47}\%$}, \textbf{$19.65\rightarrow \mathbf{48.74}^{+2.52}_{-2.48}\%$}, and \textbf{$6.26\rightarrow \mathbf{24.00}^{+1.93}_{-1.99}\%$}, beating 32-evaluation \texttt{TQA} ($45.19\%, 31.64\%, 21.94\%$) by \textbf{$\mathbf{+26.50}, \mathbf{+17.10}, \mathbf{+2.06}$ pp} ($9.50\%, 3.88\%$ at $n=12, 14$, Proposition 5).
+\item \textbf{Bidirectional Zero-Shot Cross-Scale Generalization ($n\in\{6,8,10,12,14\}$, 5,120 Test Instances)}: Deploying the $n=10$ ($p=10$) \textbf{Echo-Prior-Flat} weights \textbf{zero-shot} across $n\in\{6,8,10,12,14\}$ (1,024 instances/scale) maintains $\mathbf{90.01}\%$, $\mathbf{90.26}\%$, $\mathbf{87.16}\%$, $\mathbf{87.14}\%$, and $\mathbf{85.11}\%$ orientation accuracy; at $n=6,8,10$, it attains $42.28\rightarrow\allowbreak \mathbf{71.69}^{+2.35}_{-2.47}\%$, $19.65\rightarrow\allowbreak \mathbf{48.74}^{+2.52}_{-2.48}\%$, and $6.26\rightarrow\allowbreak \mathbf{24.00}^{+1.93}_{-1.99}\%$, beating 32-evaluation \texttt{TQA} ($45.19\%$, $31.64\%$, $21.94\%$) by $\mathbf{+26.50}$, $\mathbf{+17.10}$, and $\mathbf{+2.06}$ \textbf{pp} ($9.50\%$, $3.88\%$ at $n=12, 14$, Proposition 5).
 
 \end{itemize}
 \subsection{Controlled 1D Manifold Readout Ablations and Finite-Shot Noise Robustness}\label{subsec:5_4}
@@ -447,20 +443,25 @@ Figure 3 and Table 3 evaluate unseen MWIS instances ($n=10$, 1,024 instances). \
 
 \textbf{Graph-level vs. node-level readout within the 1D manifold.} Comparing three readout heads under identical raw $(J,h)$ inputs and GNN backbones (Table 4) isolates the representation gain: within the 1D manifold, continuous scalar regression (\texttt{Echo-GNN-Scalar}) collapses under branch jumping ($8.45\%$); soft-grid KL distillation (\texttt{Echo-GNN-Grid}) avoids coordinate interpolation ($16.90\%$), but graph pooling erases node-to-qubit correspondence and cannot resolve the $n$-fold product spectrum; node-equivariant marginals + overlap decoding (\textbf{Echo-Prior-Flat}) reaches \textbf{$\mathbf{23.48}\%$} ($+6.57$ pp, $[+5.18, +8.00]$).
 
-\textbf{Immunity to Stage-1 Winner's Curse and shot-frugal optimization.} Under multinomial shot noise $\sigma_E/\sqrt{N_{\mathrm{shots}}}$, 32-candidate online \texttt{TQA} suffers severe Stage-1 "Winner's Curse": its true-best selection hit rate drops to \textbf{$36.86\%, 44.86\%, 51.02\%$} at $N_{\mathrm{shots}}=16, 32, 64$ ($61.00\%\text{--}78.20\%$ at $128\text{--}1024$), whereas \texttt{Echo-Prior-Flat} decodes classically (\textbf{0 measurements}, \textbf{$100\%$} immunity). In end-to-end parameter-shift optimization (Table 5), \texttt{Echo-Prior-Flat} with \textbf{32-step early stopping ($50.6\%$ shot savings)} reaches $17.76\%\text{--}18.28\%$, and at \textbf{64 steps} achieves the highest probability across all shot levels (\textbf{$\mathbf{19.67}\%\text{--}\mathbf{19.98}\%$}).
+\textbf{Immunity to Stage-1 Winner's Curse and shot-frugal optimization.} Under multinomial shot noise $\sigma_E/\sqrt{N_{\mathrm{shots}}}$, 32-candidate online \texttt{TQA} suffers severe Stage-1 ``Winner's Curse'': its true-best selection hit rate drops to $\mathbf{36.86}\%$, $\mathbf{44.86}\%$, and $\mathbf{51.02}\%$ at $N_{\mathrm{shots}}=16, 32, 64$ ($61.00\%\text{--}78.20\%$ at $128\text{--}1024$), whereas \texttt{Echo-Prior-Flat} decodes classically (\textbf{0 measurements}, \textbf{$100\%$} immunity). In end-to-end parameter-shift optimization (Table 5), \texttt{Echo-Prior-Flat} with \textbf{32-step early stopping ($50.6\%$ shot savings)} reaches $17.76\%\text{--}18.28\%$, and at \textbf{64 steps} achieves the highest probability across all shot levels (\textbf{$\mathbf{19.67}\%\text{--}\mathbf{19.98}\%$}).
 
 \section{Discussion and Conclusion}\label{sec:6}
 
 \textbf{Decoupled synergy and scaling.} Embedding spin-echo parity decoupling (Propositions 1--2) and Daubechies spectral factorization (Propositions 3--4) into the standard QAOA ansatz yields a zero-measurement 1D overlap decoder that reformulates discontinuous angle regression into smooth node-level marginal distillation (\textbf{Echo-Prior}), projecting onto $O(\delta^{2k})$ fault-tolerant Flat-Top starts before Stage-2 recoupling restores entanglement (Appendix D.2). Proposition 5 shows that Stage-1 localization requires non-zero fields $H_h$ (motivating spin pinning when $h=0$) and obeys a single-scalar attenuation bound under incommensurate fields as $n$ grows, motivating commensurate depth scaling $p=2k$ alongside full-angle recoupling.
 
 \clearpage
+
 \section*{Code and Data Availability}
 
-All source code, benchmark datasets, pretrained model weights, and independent verification suites are open-sourced under the MIT License at \url{https://github.com/jollyxenon/Echo-Prior}.
+All source code, deterministic benchmark instance generators and uniqueness verification suites (\texttt{src/\allowbreak{}instances/\allowbreak{}benchmark.py} and \texttt{src/\allowbreak{}instances/\allowbreak{}mwis.py}, \texttt{seed = 0}), per-instance evaluation records and figure source data CSVs (\texttt{paper/\allowbreak{}figures/\allowbreak{}{*}.csv}), and reproduction scripts are open-sourced under the MIT License at \url{https://github.com/jollyxenon/Echo-Prior}.
 
 \section*{Acknowledgments}
 
 This research grew out of a competition experience. The author gratefully acknowledges the DataTech Club at ShanghaiTech University for introducing the competition platform and providing computing resources, thanks his mother for funding part of this research, and thanks ShanghaiTech University for its academic environment.
+
+\section*{Competing Interests}
+
+The author declares no competing interests.
 
 \bibliography{references}
 \bibliographystyle{icml2027}
@@ -674,7 +675,7 @@ Taking the non-negative root gives $u=\sin(\pi/L)/\sqrt{1+2\tau\cos(\pi/L)+\tau^
 
 \subsection{Independent Circuit Recomputation and Numerical Verification}\label{subsec:b_4}
 
-All offline and online outputs are cross-verified by two independent statevector engines (\texttt{NumPy/autograd} and \texttt{PyTorch complex128}). Across all five-family offline benchmark runs, the maximum target-state probability residual is $5.77\times 10^{-15}$ and statevector norm residuals are below $10^{-14}$; across all MWIS online evaluations, checkpoint reload angle differences are at most $2.13\times 10^{-14}$ and full $2^n$-distribution / expected-energy residuals are at most $6.06\times 10^{-14}$. Applying random vertex permutations $(J,h)\mapsto(PJP^\top, Ph)$ across all 1,024 test instances yields a maximum inverse-permuted marginal difference of $1.07\times 10^{-6}$ (\texttt{float32} precision) and \textbf{0/1,024 differences} in decoded 128-point scalars and starting angles across all three depths, confirming strict permutation equivariance and invariance. All confidence intervals use \texttt{replicates = 4000, seed = 0} instance-level non-parametric percentile bootstrap.
+All offline and online outputs are cross-verified by two independent statevector engines (\texttt{NumPy/\allowbreak{}autograd} and \texttt{PyTorch complex128}). Across all five-family offline benchmark runs, the maximum target-state probability residual is $5.77\times 10^{-15}$ and statevector norm residuals are below $10^{-14}$; across all MWIS online evaluations, checkpoint reload angle differences are at most $2.13\times 10^{-14}$ and full $2^n$-distribution / expected-energy residuals are at most $6.06\times 10^{-14}$. Applying random vertex permutations $(J,h)\mapsto(PJP^\top, Ph)$ across all 1,024 test instances yields a maximum inverse-permuted marginal difference of $1.07\times 10^{-6}$ (\texttt{float32} precision) and \textbf{0/1,024 differences} in decoded 128-point scalars and starting angles across all three depths, confirming strict permutation equivariance and invariance. All confidence intervals use \texttt{replicates = 4000, seed = 0} instance-level non-parametric percentile bootstrap.
 
 
 \section{Benchmark Instance Generation and Ground-State Uniqueness Verification}\label{app:C}
@@ -703,7 +704,7 @@ Every candidate instance enumerates all $2^n$ spin configurations: near-ground s
 
 \subsection{Five-Family Benchmark Breakdown by System Size and Circuit Depth}\label{subsec:d_1}
 
-Table D.1 and Table D.2 break down the five-family offline benchmark across all 11 system sizes $n\in\{6,\ldots,16\}$ (250 instances per row) and all five circuit depths $p\in\{6,8,10,12,14\}$ (2,750 instances per row). Flat-Top Echo (\texttt{Echo-Flat}) achieves the highest mean probability across all six small-to-medium scales $n=6\ldots 11$ (e.g., $\mathbf{93.41}\%$, $\mathbf{88.53}\%$, $\mathbf{78.07}\%$, and $\mathbf{69.65}\%$ at $n=6,7,8,9$) and across depths $p=6,8,10,12$ (climbing monotonically from $\mathbf{37.95}\%$ to $\mathbf{60.89}\%$ and $63.62\%$ at $p=14$, whereas \texttt{INTERP} and \texttt{RI} degrade at $p\ge 10$ to $24.16\%$ and $24.13\%$), while at larger scales $n\ge 12$, 30-second wall-clock truncation ($2^n$ statevector simulation overhead) and the fixed-depth 1D multiplicative attenuation bound of Proposition 5 under incommensurate local fields govern the single-scalar trajectory, in exact agreement with Section 3.7.
+Table D.1 and Table D.2 break down the five-family offline benchmark across all 11 system sizes $n\in\{6,\ldots,16\}$ (250 instances per row) and all five circuit depths $p\in\{6,8,10,12,14\}$ (2,750 instances per row). Flat-Top Echo (\texttt{Echo-Flat}) achieves the highest mean probability across all six small-to-medium scales $n=6\ldots 11$ (e.g., $\mathbf{93.41}\%$, $\mathbf{88.53}\%$, $\mathbf{78.07}\%$, and $\mathbf{69.65}\%$ at $n=6,7,8,9$) and across depths $p=6,8,10,12$ (climbing monotonically from $\mathbf{37.95}\%$ to $\mathbf{60.89}\%$ and $63.62\%$ at $p=14$, whereas \texttt{RI} saturates at $33.12\%\text{--}33.61\%$ under local traps and \texttt{INTERP} degrades at $p\ge 10$ to $24.16\%$), while at larger scales $n\ge 12$, 30-second wall-clock truncation ($2^n$ statevector simulation overhead) and the fixed-depth 1D multiplicative attenuation bound of Proposition 5 under incommensurate local fields govern the single-scalar trajectory, in exact agreement with Section 3.7.
 
 \begin{table}[htbp]
 \vskip -0.04in
@@ -718,17 +719,17 @@ Table D.1 and Table D.2 break down the five-family offline benchmark across all 
 \toprule
 Size $n$ & \texttt{Echo-Flat} & \texttt{Echo-Alt} & \texttt{Echo-End} & RI & TQA & INTERP \\
 \midrule
-$6$ & $\mathbf{93.41}^{+1.00}_{-1.03}$ & $92.74^{+1.00}_{-1.06}$ & $91.21^{+1.08}_{-1.13}$ & $73.45^{+1.54}_{-1.53}$ & $79.92^{+1.88}_{-2.00}$ & $77.10^{+1.78}_{-1.84}$ \\
-$7$ & $\mathbf{88.53}^{+1.37}_{-1.44}$ & $86.83^{+1.37}_{-1.47}$ & $84.49^{+1.43}_{-1.52}$ & $62.59^{+1.98}_{-2.01}$ & $73.82^{+2.10}_{-2.25}$ & $68.09^{+2.23}_{-2.25}$ \\
-$8$ & $\mathbf{78.07}^{+2.02}_{-2.04}$ & $77.23^{+1.83}_{-1.92}$ & $72.90^{+2.00}_{-2.06}$ & $46.04^{+1.95}_{-1.84}$ & $66.76^{+2.40}_{-2.39}$ & $53.74^{+2.29}_{-2.22}$ \\
-$9$ & $\mathbf{69.65}^{+2.31}_{-2.21}$ & $68.24^{+1.93}_{-2.01}$ & $62.78^{+2.20}_{-2.11}$ & $35.31^{+1.69}_{-1.64}$ & $61.38^{+2.49}_{-2.49}$ & $43.60^{+2.27}_{-2.15}$ \\
-$10$ & $\mathbf{59.46}^{+2.38}_{-2.33}$ & $58.92^{+1.86}_{-1.94}$ & $52.62^{+2.16}_{-2.07}$ & $26.51^{+1.62}_{-1.51}$ & $56.30^{+2.60}_{-2.73}$ & $32.97^{+2.04}_{-1.96}$ \\
-$11$ & $\mathbf{51.27}^{+2.18}_{-2.30}$ & $48.54^{+1.93}_{-1.92}$ & $44.08^{+2.02}_{-2.03}$ & $21.26^{+1.38}_{-1.37}$ & $50.59^{+2.58}_{-2.58}$ & $25.72^{+1.74}_{-1.77}$ \\
-$12$ & $42.97^{+2.21}_{-2.29}$ & $38.26^{+1.62}_{-1.69}$ & $36.14^{+1.92}_{-1.93}$ & $13.43^{+1.02}_{-0.93}$ & $\mathbf{45.12}^{+2.51}_{-2.63}$ & $16.79^{+1.44}_{-1.43}$ \\
-$13$ & $37.89^{+2.66}_{-2.57}$ & $31.29^{+1.82}_{-1.81}$ & $30.93^{+2.17}_{-2.15}$ & $8.83^{+0.67}_{-0.64}$ & $\mathbf{43.76}^{+2.77}_{-2.92}$ & $9.63^{+0.91}_{-0.90}$ \\
-$14$ & $28.67^{+2.39}_{-2.43}$ & $19.54^{+1.38}_{-1.30}$ & $20.99^{+1.71}_{-1.72}$ & $1.79^{+0.24}_{-0.23}$ & $\mathbf{38.72}^{+2.54}_{-2.53}$ & $2.89^{+0.38}_{-0.36}$ \\
-$15$ & $21.82^{+2.38}_{-2.34}$ & $10.85^{+1.03}_{-0.98}$ & $14.35^{+1.58}_{-1.57}$ & $0.42^{+0.08}_{-0.07}$ & $\mathbf{34.37}^{+2.67}_{-2.73}$ & $0.58^{+0.20}_{-0.16}$ \\
-$16$ & $12.07^{+2.07}_{-2.00}$ & $3.40^{+0.48}_{-0.44}$ & $6.20^{+1.16}_{-1.06}$ & $0.06^{+0.01}_{-0.01}$ & $\mathbf{29.30}^{+2.36}_{-2.28}$ & $0.14^{+0.04}_{-0.04}$ \\
+$6$ & $\mathbf{93.41}^{+1.00}_{-1.03}$ & $92.74^{+1.00}_{-1.06}$ & $91.21^{+1.08}_{-1.13}$ & $78.50^{+1.50}_{-1.51}$ & $79.92^{+1.88}_{-2.00}$ & $77.10^{+1.78}_{-1.84}$ \\
+$7$ & $\mathbf{88.53}^{+1.37}_{-1.44}$ & $86.83^{+1.37}_{-1.47}$ & $84.49^{+1.43}_{-1.52}$ & $68.70^{+1.77}_{-1.86}$ & $73.82^{+2.10}_{-2.25}$ & $68.09^{+2.23}_{-2.25}$ \\
+$8$ & $\mathbf{78.07}^{+2.02}_{-2.04}$ & $77.23^{+1.83}_{-1.92}$ & $72.90^{+2.00}_{-2.06}$ & $54.36^{+2.14}_{-2.09}$ & $66.76^{+2.40}_{-2.39}$ & $53.74^{+2.29}_{-2.22}$ \\
+$9$ & $\mathbf{69.65}^{+2.31}_{-2.21}$ & $68.24^{+1.93}_{-2.01}$ & $62.78^{+2.20}_{-2.11}$ & $44.37^{+1.95}_{-1.87}$ & $61.38^{+2.49}_{-2.49}$ & $43.60^{+2.27}_{-2.15}$ \\
+$10$ & $\mathbf{59.46}^{+2.38}_{-2.33}$ & $58.92^{+1.86}_{-1.94}$ & $52.62^{+2.16}_{-2.07}$ & $34.97^{+1.93}_{-1.80}$ & $56.30^{+2.60}_{-2.73}$ & $32.97^{+2.04}_{-1.96}$ \\
+$11$ & $\mathbf{51.27}^{+2.18}_{-2.30}$ & $48.54^{+1.93}_{-1.92}$ & $44.08^{+2.02}_{-2.03}$ & $27.94^{+1.65}_{-1.64}$ & $50.59^{+2.58}_{-2.58}$ & $25.72^{+1.74}_{-1.77}$ \\
+$12$ & $42.97^{+2.21}_{-2.29}$ & $38.26^{+1.62}_{-1.69}$ & $36.14^{+1.92}_{-1.93}$ & $18.59^{+1.31}_{-1.27}$ & $\mathbf{45.12}^{+2.51}_{-2.63}$ & $16.79^{+1.44}_{-1.43}$ \\
+$13$ & $37.89^{+2.66}_{-2.57}$ & $31.29^{+1.82}_{-1.81}$ & $30.93^{+2.17}_{-2.15}$ & $12.36^{+1.01}_{-1.03}$ & $\mathbf{43.76}^{+2.77}_{-2.92}$ & $9.63^{+0.91}_{-0.90}$ \\
+$14$ & $28.67^{+2.39}_{-2.43}$ & $19.54^{+1.38}_{-1.30}$ & $20.99^{+1.71}_{-1.72}$ & $5.45^{+0.58}_{-0.56}$ & $\mathbf{38.72}^{+2.54}_{-2.53}$ & $2.89^{+0.38}_{-0.36}$ \\
+$15$ & $21.82^{+2.38}_{-2.34}$ & $10.85^{+1.03}_{-0.98}$ & $14.35^{+1.58}_{-1.57}$ & $1.87^{+0.27}_{-0.26}$ & $\mathbf{34.37}^{+2.67}_{-2.73}$ & $0.58^{+0.20}_{-0.16}$ \\
+$16$ & $12.07^{+2.07}_{-2.00}$ & $3.40^{+0.48}_{-0.44}$ & $6.20^{+1.16}_{-1.06}$ & $0.35^{+0.07}_{-0.06}$ & $\mathbf{29.30}^{+2.36}_{-2.28}$ & $0.14^{+0.04}_{-0.04}$ \\
 \bottomrule
 \end{tabular}%
 \vskip -0.02in
@@ -746,11 +747,11 @@ $16$ & $12.07^{+2.07}_{-2.00}$ & $3.40^{+0.48}_{-0.44}$ & $6.20^{+1.16}_{-1.06}$
 \toprule
 Depth $p$ & \texttt{Echo-Flat} & \texttt{Echo-Alt} & \texttt{Echo-End} & RI & TQA & INTERP \\
 \midrule
-$6$ & $\mathbf{37.95}^{+1.09}_{-1.10}$ & $36.13^{+1.06}_{-1.09}$ & $34.24^{+1.02}_{-1.06}$ & $25.17^{+0.98}_{-0.95}$ & $36.87^{+0.86}_{-0.85}$ & $31.03^{+0.99}_{-0.99}$ \\
-$8$ & $\mathbf{47.57}^{+1.15}_{-1.18}$ & $44.40^{+1.19}_{-1.24}$ & $42.69^{+1.12}_{-1.15}$ & $23.10^{+1.04}_{-1.05}$ & $46.71^{+0.95}_{-0.94}$ & $34.10^{+1.16}_{-1.20}$ \\
-$10$ & $\mathbf{55.33}^{+1.20}_{-1.22}$ & $49.95^{+1.26}_{-1.28}$ & $48.66^{+1.16}_{-1.20}$ & $35.69^{+1.16}_{-1.19}$ & $54.57^{+1.00}_{-1.02}$ & $32.84^{+1.24}_{-1.30}$ \\
-$12$ & $\mathbf{60.89}^{+1.21}_{-1.24}$ & $54.72^{+1.31}_{-1.33}$ & $52.81^{+1.20}_{-1.26}$ & $23.58^{+1.08}_{-1.07}$ & $60.55^{+0.99}_{-1.02}$ & $28.43^{+1.24}_{-1.28}$ \\
-$14$ & $63.62^{+1.26}_{-1.29}$ & $58.36^{+1.31}_{-1.33}$ & $56.46^{+1.24}_{-1.29}$ & $24.13^{+1.08}_{-1.08}$ & $\mathbf{64.97}^{+0.97}_{-1.00}$ & $24.16^{+1.14}_{-1.13}$ \\
+$6$ & $\mathbf{37.95}^{+1.09}_{-1.10}$ & $36.13^{+1.06}_{-1.09}$ & $34.24^{+1.02}_{-1.06}$ & $27.53^{+0.97}_{-0.97}$ & $36.87^{+0.86}_{-0.85}$ & $31.03^{+0.99}_{-0.99}$ \\
+$8$ & $\mathbf{47.57}^{+1.15}_{-1.18}$ & $44.40^{+1.19}_{-1.24}$ & $42.69^{+1.12}_{-1.15}$ & $31.14^{+1.09}_{-1.13}$ & $46.71^{+0.95}_{-0.94}$ & $34.10^{+1.16}_{-1.20}$ \\
+$10$ & $\mathbf{55.33}^{+1.20}_{-1.22}$ & $49.95^{+1.26}_{-1.28}$ & $48.66^{+1.16}_{-1.20}$ & $32.53^{+1.16}_{-1.16}$ & $54.57^{+1.00}_{-1.02}$ & $32.84^{+1.24}_{-1.30}$ \\
+$12$ & $\mathbf{60.89}^{+1.21}_{-1.24}$ & $54.72^{+1.31}_{-1.33}$ & $52.81^{+1.20}_{-1.26}$ & $33.61^{+1.23}_{-1.25}$ & $60.55^{+0.99}_{-1.02}$ & $28.43^{+1.24}_{-1.28}$ \\
+$14$ & $63.62^{+1.26}_{-1.29}$ & $58.36^{+1.31}_{-1.33}$ & $56.46^{+1.24}_{-1.29}$ & $33.12^{+1.32}_{-1.27}$ & $\mathbf{64.97}^{+0.97}_{-1.00}$ & $24.16^{+1.14}_{-1.13}$ \\
 \bottomrule
 \end{tabular}%
 \vskip -0.02in
@@ -761,27 +762,69 @@ Table D.3 tracks the ground-state probability progression on all 1,024 MWIS test
 
 \begin{table}[htbp]
 \vskip -0.04in
-\caption{Mechanistic progression on the MWIS test set ($n=10$, 1,024 instances, \texttt{seed = 0}) comparing the $n$-DoF static independent product state, the standard-QAOA 1D Echo manifold projected starting point, and the $2p$-D full-angle recoupled endpoint (\%).}
+\caption{Mechanistic progression on the MWIS test set ($n=10$, 1,024 instances, \texttt{seed = 0}) from the $n$-DoF static independent product distribution $\prod_i\widehat\pi_i(s_i^\star)$, through the 1D Echo projected start (\texttt{Echo-Prior-Flat}), to the $2p$-D recoupled endpoint (\%).}
 \label{tab:d_3}
 \vskip 0.01in
 \centering
 \footnotesize
 \renewcommand{\arraystretch}{0.96}
-\setlength{\tabcolsep}{4.0pt}
-\resizebox{\textwidth}{!}{%
+\setlength{\tabcolsep}{5.5pt}
 \begin{tabular}{cccccc}
 \toprule
-Depth & $n$-DoF Static Echo-Prior Product $\prod_i\widehat\pi_i(s_i^\star)$ & 1D Echo Projected Start (\texttt{Echo-Prior-Flat} Init.) & 1D Recoupled Endpoint (\texttt{Echo-Prior-Flat} Final) & Stage-2 Recoupling Net Gain (pp) & Per-Instance Win Rate \\
+Depth & Static $n$-DoF Product & 1D Echo Start (Init.) & $2p$ Recoupled (Final) & Stage-2 Gain (pp) & Win Rate \\
 \midrule
 $p = 8$ & $8.97^{+0.59}_{-0.57}$ & $6.00^{+0.91}_{-0.89}$ & $\mathbf{16.83}^{+1.59}_{-1.62}$ & $+10.83^{+1.05}_{-1.05}$ & $89.4\%$ \\
 $p = 10$ & $11.02^{+0.73}_{-0.72}$ & $6.26^{+0.97}_{-0.93}$ & $\mathbf{24.00}^{+1.93}_{-1.99}$ & $+17.75^{+1.47}_{-1.49}$ & $90.9\%$ \\
 $p = 12$ & $12.05^{+0.83}_{-0.80}$ & $6.68^{+1.07}_{-1.01}$ & $\mathbf{29.60}^{+2.27}_{-2.26}$ & $+22.93^{+1.79}_{-1.77}$ & $92.7\%$ \\
 \bottomrule
 \end{tabular}%
-}
 \vskip -0.02in
 \end{table}
 While the ideal static product distribution $\prod_{i=1}^n\widehat\pi_i^{\mathbf1[s_i^\star=+1]}(1-\widehat\pi_i)^{\mathbf1[s_i^\star=-1]}$ attains $8.97\%\text{--}12.05\%$, it requires $n=10$ independent per-qubit degrees of freedom that cannot be prepared by any single-layer global angle in standard QAOA without modifying the initial state and mixers (as in Warm-Start QAOA). Projecting onto the 1D Flat-Top Echo manifold $Q_a(s)$ compresses $n=10$ degrees of freedom into a single scalar $a$ ($6.00\%\text{--}6.68\%$); releasing all $2p$ global angles in Stage 2 re-activates $H_J$ and boosts the probability by $+10.83$, $+17.75$, and $+22.93$ pp to $\mathbf{16.83}\%$, $\mathbf{24.00}\%$, and $\mathbf{29.60}\%$ (win rates $89.4\%\text{--}92.7\%$), surpassing the static product distribution by $+7.86\text{--}+17.55$ pp.
 
+\subsection{Complete 36-Model Full-Angle Regression Breakdown on Unseen MWIS Instances}\label{subsec:d_3}
+
+Table D.4 reports the complete evaluation across all 18 online methods---comprising all 36 trained full-$2p$ angle regression models (2 backbones \texttt{GNN/\allowbreak{}MLP} $\times$ 6 offline supervision teachers $\times$ 3 depths $p\in\{8,10,12\}$), the 9 \texttt{Echo-Prior} per-qubit marginal distillation models, and the 3 online heuristic baselines---on the 1,024 held-out MWIS test instances ($n=10$, \texttt{seed = 0}).
+
+\begin{table}[htbp]
+\vskip -0.04in
+\caption{Complete initial $\rightarrow\allowbreak$ post-energy-optimization mean ground-state probabilities (\%) on the MWIS test set ($n=10$, 1,024 instances, \texttt{seed = 0}) across all 36 full-angle regression models, per-qubit marginal distillation (\texttt{Echo-Prior}), and online heuristics. Best values are in bold.}
+\label{tab:d_4}
+\vskip 0.01in
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{0.96}
+\setlength{\tabcolsep}{5.5pt}
+\resizebox{0.94\textwidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+Paradigm \& Backbone & Method & Stage-1 Evals & $p = 8$ & $p = 10$ & $p = 12$ & Cross-Depth Mean \\
+\midrule
+\textbf{Per-Qubit Distillation} \emph{(Ours)} & \textbf{Echo-Prior-Flat} & $\mathbf{0}$ & $6.00 \rightarrow\allowbreak 16.83^{+1.59}_{-1.62}$ & $6.26 \rightarrow\allowbreak \mathbf{24.00}^{+1.93}_{-1.99}$ & $6.68 \rightarrow\allowbreak \mathbf{29.60}^{+2.27}_{-2.26}$ & $\mathbf{23.48}\%$ \\
+ & \textbf{Echo-Prior-End} & $0$ & $5.21 \rightarrow\allowbreak 13.90^{+1.35}_{-1.28}$ & $5.22 \rightarrow\allowbreak 18.21^{+1.54}_{-1.52}$ & $5.31 \rightarrow\allowbreak 23.72^{+1.81}_{-1.70}$ & $18.61\%$ \\
+ & \textbf{Echo-Prior-Alt} & $0$ & $3.46 \rightarrow\allowbreak 9.09^{+0.90}_{-0.85}$ & $3.32 \rightarrow\allowbreak 14.16^{+1.26}_{-1.26}$ & $3.30 \rightarrow\allowbreak 19.27^{+1.59}_{-1.61}$ & $14.18\%$ \\
+\midrule
+\textbf{Full-Angle Regression} \emph{(GNN)} & \textbf{GNN-TQA} & $0$ & $9.27 \rightarrow\allowbreak \mathbf{17.33}^{+0.60}_{-0.60}$ & $10.40 \rightarrow\allowbreak 22.45^{+0.70}_{-0.71}$ & $9.95 \rightarrow\allowbreak 28.28^{+0.94}_{-0.97}$ & $22.68\%$ \\
+ & \textbf{GNN-Flat} & $0$ & $0.09 \rightarrow\allowbreak 4.19^{+0.69}_{-0.62}$ & $0.12 \rightarrow\allowbreak 7.04^{+1.00}_{-0.96}$ & $0.11 \rightarrow\allowbreak 10.06^{+1.33}_{-1.22}$ & $7.10\%$ \\
+ & \textbf{GNN-End} & $0$ & $0.11 \rightarrow\allowbreak 4.86^{+0.71}_{-0.66}$ & $0.10 \rightarrow\allowbreak 7.19^{+0.92}_{-0.89}$ & $0.11 \rightarrow\allowbreak 10.86^{+1.24}_{-1.20}$ & $7.64\%$ \\
+ & \textbf{GNN-Alt} & $0$ & $0.10 \rightarrow\allowbreak 4.97^{+0.71}_{-0.67}$ & $0.10 \rightarrow\allowbreak 7.66^{+0.97}_{-0.94}$ & $0.10 \rightarrow\allowbreak 11.08^{+1.23}_{-1.17}$ & $7.90\%$ \\
+ & \textbf{GNN-RI} & $0$ & $0.02 \rightarrow\allowbreak 7.99^{+0.30}_{-0.27}$ & $0.09 \rightarrow\allowbreak 9.61^{+0.63}_{-0.60}$ & $0.02 \rightarrow\allowbreak 14.25^{+0.61}_{-0.60}$ & $10.62\%$ \\
+ & \textbf{GNN-INTERP} & $0$ & $0.10 \rightarrow\allowbreak 4.47^{+0.60}_{-0.57}$ & $0.09 \rightarrow\allowbreak 7.12^{+0.86}_{-0.83}$ & $0.11 \rightarrow\allowbreak 9.73^{+1.00}_{-0.96}$ & $7.10\%$ \\
+\midrule
+\textbf{Full-Angle Regression} \emph{(MLP)} & \textbf{MLP-TQA} & $0$ & $8.58 \rightarrow\allowbreak 17.24^{+0.61}_{-0.62}$ & $9.08 \rightarrow\allowbreak 22.17^{+0.68}_{-0.67}$ & $10.36 \rightarrow\allowbreak 28.25^{+0.93}_{-0.95}$ & $22.55\%$ \\
+ & \textbf{MLP-Flat} & $0$ & $0.10 \rightarrow\allowbreak 4.52^{+0.71}_{-0.67}$ & $0.11 \rightarrow\allowbreak 7.98^{+1.07}_{-1.01}$ & $0.11 \rightarrow\allowbreak 11.73^{+1.37}_{-1.30}$ & $8.08\%$ \\
+ & \textbf{MLP-End} & $0$ & $0.11 \rightarrow\allowbreak 4.66^{+0.68}_{-0.66}$ & $0.14 \rightarrow\allowbreak 8.07^{+1.03}_{-0.93}$ & $0.09 \rightarrow\allowbreak 10.93^{+1.29}_{-1.22}$ & $7.89\%$ \\
+ & \textbf{MLP-Alt} & $0$ & $0.10 \rightarrow\allowbreak 5.37^{+0.72}_{-0.68}$ & $0.10 \rightarrow\allowbreak 7.83^{+1.02}_{-0.97}$ & $0.10 \rightarrow\allowbreak 10.31^{+1.27}_{-1.25}$ & $7.83\%$ \\
+ & \textbf{MLP-RI} & $0$ & $0.20 \rightarrow\allowbreak 6.87^{+0.47}_{-0.44}$ & $0.15 \rightarrow\allowbreak 9.84^{+0.66}_{-0.60}$ & $0.13 \rightarrow\allowbreak 10.96^{+0.77}_{-0.76}$ & $9.22\%$ \\
+ & \textbf{MLP-INTERP} & $0$ & $0.11 \rightarrow\allowbreak 3.88^{+0.56}_{-0.53}$ & $0.10 \rightarrow\allowbreak 6.57^{+0.74}_{-0.76}$ & $0.10 \rightarrow\allowbreak 9.59^{+0.99}_{-0.96}$ & $6.68\%$ \\
+\midrule
+\textbf{Online Heuristics} \emph{(Baselines)} & \textbf{TQA} & $32$ & $4.60 \rightarrow\allowbreak 17.05^{+0.56}_{-0.56}$ & $6.81 \rightarrow\allowbreak 21.94^{+0.68}_{-0.68}$ & $8.23 \rightarrow\allowbreak 28.27^{+0.92}_{-0.91}$ & $22.42\%$ \\
+ & \textbf{RI (32)} & $32$ & $0.22 \rightarrow\allowbreak 6.47^{+0.62}_{-0.60}$ & $0.20 \rightarrow\allowbreak 9.93^{+0.87}_{-0.81}$ & $0.17 \rightarrow\allowbreak 12.81^{+1.02}_{-0.97}$ & $9.73\%$ \\
+ & \textbf{RI (1)} & $0$ & $0.10 \rightarrow\allowbreak 3.84^{+0.60}_{-0.57}$ & $0.10 \rightarrow\allowbreak 6.82^{+0.90}_{-0.87}$ & $0.10 \rightarrow\allowbreak 10.42^{+1.23}_{-1.20}$ & $7.03\%$ \\
+\bottomrule
+\end{tabular}%
+}
+\vskip -0.02in
+\end{table}
 
 \end{document}

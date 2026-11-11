@@ -86,7 +86,7 @@ pixi run -e figures paper1-figures
 @article{yao2026echoqaoa,
   title   = {{Echo-QAOA}: Constructive spin-echo response design and per-qubit marginal distillation for variational quantum optimization},
   author  = {Yao, Jianxuan},
-  journal = {arXiv preprint},
+  journal = {Research Square preprint},
   year    = {2026}
 }
 ```
