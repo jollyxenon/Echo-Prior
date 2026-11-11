@@ -47,7 +47,7 @@ tectonic = ">=0.15"
 [feature.figures.tasks]
 paper1-figures = "python paper/plot_fig1_pipeline.py && python paper/generate_paper1_figures.py"
 build-bib = "python paper/build_references_bib.py"
-build-pdf = "python paper/convert_md_to_icml_tex.py && tectonic -X compile paper/main.tex"
+build-pdf = "python paper/convert_md_to_icml_tex.py && tectonic -X compile paper/paper1_preprint.tex"
 
 [environments]
 learning = { features = ["learning"], no-default-feature = true }
