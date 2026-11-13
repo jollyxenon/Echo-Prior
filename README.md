@@ -2,6 +2,8 @@
 
 Official open-source implementation of **Echo-QAOA** and **Echo-Prior** (*Echo-QAOA: Constructive Spin-Echo Response Design and Per-Qubit Marginal Distillation for Variational Quantum Optimization*).
 
+- **Preprint (Research Square)**: [https://www.researchsquare.com/article/rs-11707296/v1](https://www.researchsquare.com/article/rs-11707296/v1) (DOI: [`10.21203/rs.3.rs-11707296/v1`](https://doi.org/10.21203/rs.3.rs-11707296/v1))
+
 This repository provides the complete codebase for:
 1. **Intra-Circuit Spin-Echo Operator Parity Decoupling & Constructive 1D Response Recipes**:
    - Exact cancellation of quadratic spin-spin couplings $H_J$ within the unmodified standard $p$-layer global QAOA circuit ansatz at positive even depth $p=2k$ via complete spin-echo pairs $(\gamma_{2j-1},\gamma_{2j})=(-g_j,g_j)$ and $(\beta_{2j-1},\beta_{2j})=(\pi/2,\theta_j)$, factorizing target-state probabilities into $O(kn)$ single-qubit magnetization responses.
@@ -83,10 +85,12 @@ pixi run -e figures paper1-figures
 ## Citation
 
 ```bibtex
-@article{yao2026echoqaoa,
-  title   = {{Echo-QAOA}: Constructive spin-echo response design and per-qubit marginal distillation for variational quantum optimization},
+@article{yao2026echo,
+  title   = {{Echo-QAOA}: Constructive Spin-Echo Response Design and Per-Qubit Marginal Distillation for Variational Quantum Optimization},
   author  = {Yao, Jianxuan},
-  journal = {Research Square preprint},
-  year    = {2026}
+  journal = {Research Square preprint rs-11707296/v1},
+  year    = {2026},
+  doi     = {10.21203/rs.3.rs-11707296/v1},
+  url     = {https://www.researchsquare.com/article/rs-11707296/v1}
 }
 ```
